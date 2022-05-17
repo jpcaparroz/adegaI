@@ -152,6 +152,7 @@ public class TelaLogin extends javax.swing.JFrame {
         if (verificarSenha(rootPaneCheckingEnabled) && verificarLogin(rootPaneCheckingEnabled)) {
             
             new HomeADM().setVisible(true);
+            this.dispose();
             
         } else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
     }//GEN-LAST:event_botaoEntrarActionPerformed

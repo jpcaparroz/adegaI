@@ -10,18 +10,20 @@ import java.awt.Cursor;
  *
  * @author Joao
  */
-public class HomeADM extends javax.swing.JFrame {
+public class VendasADM extends javax.swing.JFrame {
 
     /**
      * Creates new form Test
      */
-    public HomeADM() {
+    public VendasADM() {
         initComponents();
         
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoMostrarTodas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoIniciarVenda.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     /**
@@ -37,7 +39,12 @@ public class HomeADM extends javax.swing.JFrame {
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         user = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        descricaoUser = new javax.swing.JLabel();
+        botaoIniciarVenda = new javax.swing.JButton();
+        novaVendaCaixa = new javax.swing.JLabel();
+        numeroVendas = new javax.swing.JLabel();
+        botaoMostrarTodas = new javax.swing.JButton();
+        vendasCaixa = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
         botaoProdutos = new javax.swing.JButton();
@@ -45,10 +52,10 @@ public class HomeADM extends javax.swing.JFrame {
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
-        bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
@@ -62,34 +69,62 @@ public class HomeADM extends javax.swing.JFrame {
         user.setText("User");
         jPanel1.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("administrador");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
+        descricaoUser.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
+        descricaoUser.setForeground(new java.awt.Color(255, 255, 255));
+        descricaoUser.setText("administrador");
+        jPanel1.add(descricaoUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
-        botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
+        botaoIniciarVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoIniciar.png"))); // NOI18N
+        botaoIniciarVenda.setBorder(null);
+        botaoIniciarVenda.setBorderPainted(false);
+        botaoIniciarVenda.setContentAreaFilled(false);
+        botaoIniciarVenda.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoIniciar.png"))); // NOI18N
+        botaoIniciarVenda.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoIniciarPressed.png"))); // NOI18N
+        jPanel1.add(botaoIniciarVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 390, -1, -1));
+
+        novaVendaCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/novaVendaCaixa.png"))); // NOI18N
+        jPanel1.add(novaVendaCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, -1, -1));
+
+        numeroVendas.setFont(new java.awt.Font("Jost", 1, 100)); // NOI18N
+        numeroVendas.setForeground(new java.awt.Color(255, 209, 0));
+        numeroVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numeroVendas.setText("0");
+        numeroVendas.setMaximumSize(new java.awt.Dimension(65, 150));
+        numeroVendas.setPreferredSize(new java.awt.Dimension(65, 145));
+        jPanel1.add(numeroVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 320, 465, 110));
+
+        botaoMostrarTodas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoMostrarTodas.png"))); // NOI18N
+        botaoMostrarTodas.setBorder(null);
+        botaoMostrarTodas.setBorderPainted(false);
+        botaoMostrarTodas.setContentAreaFilled(false);
+        botaoMostrarTodas.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoMostrarTodas.png"))); // NOI18N
+        botaoMostrarTodas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoMostrarTodasPressed.png"))); // NOI18N
+        jPanel1.add(botaoMostrarTodas, new org.netbeans.lib.awtextra.AbsoluteConstraints(846, 510, -1, -1));
+
+        vendasCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/vendasCaixa.png"))); // NOI18N
+        jPanel1.add(vendasCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 180, -1, -1));
+
+        botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIcon.png"))); // NOI18N
         botaoHome.setBorder(null);
         botaoHome.setBorderPainted(false);
         botaoHome.setContentAreaFilled(false);
+        botaoHome.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
+        botaoHome.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
         jPanel1.add(botaoHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
-        botaoVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIcon.png"))); // NOI18N
+        botaoVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
         botaoVendas.setBorder(null);
         botaoVendas.setBorderPainted(false);
         botaoVendas.setContentAreaFilled(false);
         botaoVendas.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
         botaoVendas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
-        botaoVendas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoVendasActionPerformed(evt);
-            }
-        });
         jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
         botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
         botaoProdutos.setBorder(null);
         botaoProdutos.setBorderPainted(false);
         botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
         botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
         jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
@@ -97,6 +132,7 @@ public class HomeADM extends javax.swing.JFrame {
         botaoContatos.setBorder(null);
         botaoContatos.setBorderPainted(false);
         botaoContatos.setContentAreaFilled(false);
+        botaoContatos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         botaoContatos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
@@ -104,7 +140,7 @@ public class HomeADM extends javax.swing.JFrame {
         botaoRelatorios.setBorder(null);
         botaoRelatorios.setBorderPainted(false);
         botaoRelatorios.setContentAreaFilled(false);
-        botaoRelatorios.setLabel("");
+        botaoRelatorios.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
         botaoRelatorios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
         jPanel1.add(botaoRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
 
@@ -113,9 +149,6 @@ public class HomeADM extends javax.swing.JFrame {
 
         menuCima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuCima.png"))); // NOI18N
         jPanel1.add(menuCima, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/bg.png"))); // NOI18N
-        jPanel1.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,12 +164,6 @@ public class HomeADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
-        
-        new VendasADM().setVisible(true);
-           this.dispose();
-    }//GEN-LAST:event_botaoVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,38 +182,44 @@ public class HomeADM extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VendasADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VendasADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VendasADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VendasADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomeADM().setVisible(true);
+                new VendasADM().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bg;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoHome;
+    private javax.swing.JButton botaoIniciarVenda;
+    private javax.swing.JButton botaoMostrarTodas;
     private javax.swing.JButton botaoProdutos;
     private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel descricaoUser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
+    private javax.swing.JLabel novaVendaCaixa;
+    private javax.swing.JLabel numeroVendas;
     private javax.swing.JLabel user;
     private javax.swing.JLabel userIcon;
+    private javax.swing.JLabel vendasCaixa;
     // End of variables declaration//GEN-END:variables
 }
