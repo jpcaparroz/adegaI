@@ -5,6 +5,8 @@
 package adegai;
 
 import java.awt.Cursor;
+import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +24,23 @@ public class TelaLogin extends javax.swing.JFrame {
         gitIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoEntrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-
+    //metodo para verificar o login
+    private boolean verificarLogin(boolean vLogin){
+        
+        String loginUser = login.getText();
+        
+        return loginUser.matches("joao");
+    }
+    
+    //metodo para verificar a senha
+    private boolean verificarSenha(boolean vSenha){
+        
+        char getPassword[] = password.getPassword();
+        String correctPass = "123";
+        char[] cp = correctPass.toCharArray();
+        
+        return Arrays.equals(getPassword, cp); 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,23 +143,27 @@ public class TelaLogin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //ação do botao entrar (verificando senha e login corretos
     private void botaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarActionPerformed
         
-        //obtendo dados dos jTextField
-        String loginUser = login.getText();
-        String senhaUser = password.getText();
-        
-        if (loginUser.matches("joao") && senhaUser.matches("ajp")) {
-            new Test().setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");
-        }
+        if (verificarSenha(rootPaneCheckingEnabled) && verificarLogin(rootPaneCheckingEnabled)) {
+            
+            new HomeADM().setVisible(true);
+            
+        } else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
     }//GEN-LAST:event_botaoEntrarActionPerformed
-
+    
+    //ação do click no gitIcon direto ao site do projeto no github
     private void gitIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gitIconMouseClicked
-        gitIcon.setText("<html><a href=''>");
+        
+        try {
+            String projectUrl = "https://github.com/jpcaparroz/adegaI";
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(projectUrl));
+            
+        } catch (IOException e2) {}
     }//GEN-LAST:event_gitIconMouseClicked
 
     /**
@@ -173,6 +195,8 @@ public class TelaLogin extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            
+            @Override
             public void run() {
                 new TelaLogin().setVisible(true);
             }
