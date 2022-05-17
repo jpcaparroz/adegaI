@@ -10,17 +10,17 @@ import java.awt.Cursor;
  *
  * @author Joao
  */
-public class HomeADM extends javax.swing.JFrame {
+public class ContatosADM extends javax.swing.JFrame {
 
     /**
      * Creates new form Test
      */
-    public HomeADM() {
+    public ContatosADM() {
         initComponents();
         
-        botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
@@ -37,7 +37,7 @@ public class HomeADM extends javax.swing.JFrame {
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         user = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        descricaoUser = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
         botaoProdutos = new javax.swing.JButton();
@@ -45,10 +45,10 @@ public class HomeADM extends javax.swing.JFrame {
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
-        bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
@@ -62,15 +62,22 @@ public class HomeADM extends javax.swing.JFrame {
         user.setText("User");
         jPanel1.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("administrador");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
+        descricaoUser.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
+        descricaoUser.setForeground(new java.awt.Color(255, 255, 255));
+        descricaoUser.setText("administrador");
+        jPanel1.add(descricaoUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
-        botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
+        botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIcon.png"))); // NOI18N
         botaoHome.setBorder(null);
         botaoHome.setBorderPainted(false);
         botaoHome.setContentAreaFilled(false);
+        botaoHome.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
+        botaoHome.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
+        botaoHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoHomeActionPerformed(evt);
+            }
+        });
         jPanel1.add(botaoHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
         botaoVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIcon.png"))); // NOI18N
@@ -90,6 +97,7 @@ public class HomeADM extends javax.swing.JFrame {
         botaoProdutos.setBorder(null);
         botaoProdutos.setBorderPainted(false);
         botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
         botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
         botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,22 +106,19 @@ public class HomeADM extends javax.swing.JFrame {
         });
         jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
-        botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIcon.png"))); // NOI18N
+        botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         botaoContatos.setBorder(null);
         botaoContatos.setBorderPainted(false);
         botaoContatos.setContentAreaFilled(false);
+        botaoContatos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         botaoContatos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
-        botaoContatos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoContatosActionPerformed(evt);
-            }
-        });
         jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIcon.png"))); // NOI18N
         botaoRelatorios.setBorder(null);
         botaoRelatorios.setBorderPainted(false);
         botaoRelatorios.setContentAreaFilled(false);
+        botaoRelatorios.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
         botaoRelatorios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
         botaoRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,9 +132,6 @@ public class HomeADM extends javax.swing.JFrame {
 
         menuCima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuCima.png"))); // NOI18N
         jPanel1.add(menuCima, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/bg.png"))); // NOI18N
-        jPanel1.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,23 +148,17 @@ public class HomeADM extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
+        
+        new HomeADM().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoHomeActionPerformed
+
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
         
         new VendasADM().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
-
-    private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
-        
-        new ProdutosADM().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_botaoProdutosActionPerformed
-
-    private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
-        
-        new ContatosADM().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_botaoContatosActionPerformed
 
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         
@@ -170,50 +166,31 @@ public class HomeADM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
 
+    private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
+        
+        new ProdutosADM().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoProdutosActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomeADM().setVisible(true);
+                new ContatosADM().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bg;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoHome;
     private javax.swing.JButton botaoProdutos;
     private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel descricaoUser;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
