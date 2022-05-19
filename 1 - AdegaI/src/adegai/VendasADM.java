@@ -80,6 +80,11 @@ public class VendasADM extends javax.swing.JFrame {
         botaoIniciarVenda.setContentAreaFilled(false);
         botaoIniciarVenda.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoIniciar.png"))); // NOI18N
         botaoIniciarVenda.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoIniciarPressed.png"))); // NOI18N
+        botaoIniciarVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoIniciarVendaActionPerformed(evt);
+            }
+        });
         jPanel1.add(botaoIniciarVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 390, -1, -1));
 
         novaVendaCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/novaVendaCaixa.png"))); // NOI18N
@@ -221,6 +226,12 @@ public class VendasADM extends javax.swing.JFrame {
         new RelatoriosADM().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
+
+    private void botaoIniciarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoIniciarVendaActionPerformed
+        
+        new NovaVendaADM().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoIniciarVendaActionPerformed
 
     /**
      * @param args the command line arguments
