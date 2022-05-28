@@ -1,46 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package adegai;
 
 import java.awt.Cursor;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
+import dao.FuncionarioDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author Joao
- */
+
 public class TelaLogin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaLogin
-     */
-    public TelaLogin() {
+    public TelaLogin() throws SQLException {
         initComponents();
         
         gitIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoEntrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    //metodo para verificar o login
-    private boolean verificarLogin(boolean vLogin){
-        
-        String loginUser = login.getText();
-        
-        return loginUser.matches("joao");
-    }
     
-    //metodo para verificar a senha
-    private boolean verificarSenha(boolean vSenha){
-        
-        char getPassword[] = password.getPassword();
-        String correctPass = "123";
-        char[] cp = correctPass.toCharArray();
-        
-        return Arrays.equals(getPassword, cp); 
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,12 +126,27 @@ public class TelaLogin extends javax.swing.JFrame {
     //ação do botao entrar (verificando senha e login corretos
     private void botaoEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEntrarActionPerformed
         
-        if (verificarSenha(rootPaneCheckingEnabled) && verificarLogin(rootPaneCheckingEnabled)) {
+        String pass = new String(this.password.getPassword());
+        FuncionarioDAO dao;
+        
+        try {
+            dao = new FuncionarioDAO();
+            if (dao.verifyFuncionarioLogin(login.getText(), pass) == true && dao.verifyFuncionarioAdm(login.getText(), pass) == false) {
+                    
+                new ContatosADM().setVisible(true);
+                this.dispose();
+                
+            } else if (dao.verifyFuncionarioAdm(login.getText(), pass)){
+                
+                new HomeADM().setVisible(true);
+                this.dispose();
+            }
+            else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
             
-            new HomeADM().setVisible(true);
-            this.dispose();
-            
-        } else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_botaoEntrarActionPerformed
     
     //ação do click no gitIcon direto ao site do projeto no github
@@ -199,7 +191,11 @@ public class TelaLogin extends javax.swing.JFrame {
             
             @Override
             public void run() {
-                new TelaLogin().setVisible(true);
+                try {
+                    new TelaLogin().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
