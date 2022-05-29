@@ -33,8 +33,6 @@ public class Funcionario {
         return "id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", admin=" + admin;
     }
     
-    
-    
     public int getId() {
         return id;
     }
