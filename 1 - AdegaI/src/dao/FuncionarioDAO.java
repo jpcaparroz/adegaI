@@ -45,7 +45,7 @@ public class FuncionarioDAO {
         return null;
     }
     
-    //VERIFICAR FUNCIONARIO
+    //VERIFICAR LOGIN FUNCIONARIO
     public boolean verifyFuncionarioLogin(String login, String senha) throws SQLException {
         
         String sql = "SELECT * FROM funcionario WHERE login=? and senha=?";
@@ -58,7 +58,7 @@ public class FuncionarioDAO {
         return result.next() == true;
     }
     
-    //VERIFICAR ADMIN
+    //VERIFICAR LOGIN ADMIN
     public boolean verifyFuncionarioAdm(String login, String senha) throws SQLException {
         
         String sql = "SELECT * FROM funcionario WHERE login=? and senha=? and admin=1";
@@ -71,7 +71,23 @@ public class FuncionarioDAO {
         return result.next() == true;
         
     }
+
+    //RETORNAR NOME DO FUNCIONARIO
+    public Funcionario verifyFuncionario(String login, String senha) throws SQLException {
         
+        String sql = "SELECT * FROM funcionario WHERE login=? and senha=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, login);
+        statement.setString(2, senha);
+
+        ResultSet result = statement.executeQuery();
+        
+        result.next();
+        Funcionario funcionario = new Funcionario(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getBoolean(5));
+        
+        return funcionario;
+    }
+    
     public void close() throws SQLException{
         connection.close();
     }
