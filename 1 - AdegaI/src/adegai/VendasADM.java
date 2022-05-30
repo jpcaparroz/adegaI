@@ -1,20 +1,20 @@
 package adegai;
 
+import bd.ConnectBd;
+import java.sql.Connection;
 import java.awt.Cursor;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VendasADM extends javax.swing.JFrame {
-
+    
+    Connection connection;
     public VendasADM() {
         initComponents();
-        
-        botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        buscarClientes();
     }
     
     public VendasADM(String funcionario, String funcao){
@@ -22,6 +22,14 @@ public class VendasADM extends javax.swing.JFrame {
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+        
+        buscarClientes();
+        botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoFinalizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoLimpar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @SuppressWarnings("unchecked")
@@ -40,6 +48,12 @@ public class VendasADM extends javax.swing.JFrame {
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
+        comboClientes = new javax.swing.JComboBox<>();
+        caixaCliente = new javax.swing.JLabel();
+        botaoFinalizar = new javax.swing.JButton();
+        botaoLimpar = new javax.swing.JButton();
+        vendasCaixa = new javax.swing.JLabel();
+        novaVendaCaixa = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +142,42 @@ public class VendasADM extends javax.swing.JFrame {
         menuCima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuCima.png"))); // NOI18N
         jPanel1.add(menuCima, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        comboClientes.setBackground(new java.awt.Color(255, 255, 255));
+        comboClientes.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        comboClientes.setForeground(new java.awt.Color(0, 0, 0));
+        comboClientes.setToolTipText("");
+        comboClientes.setBorder(null);
+        comboClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        comboClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboClientesMouseClicked(evt);
+            }
+        });
+        jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 266, 320, 20));
+
+        caixaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/clienteCaixa.png"))); // NOI18N
+        jPanel1.add(caixaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(181, 238, -1, -1));
+
+        botaoFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
+        botaoFinalizar.setBorder(null);
+        botaoFinalizar.setContentAreaFilled(false);
+        botaoFinalizar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
+        botaoFinalizar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizarPressed.png"))); // NOI18N
+        jPanel1.add(botaoFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(471, 636, -1, -1));
+
+        botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
+        botaoLimpar.setBorder(null);
+        botaoLimpar.setContentAreaFilled(false);
+        botaoLimpar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
+        botaoLimpar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimparPressed.png"))); // NOI18N
+        jPanel1.add(botaoLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 636, -1, -1));
+
+        vendasCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/caixaVendas.png"))); // NOI18N
+        jPanel1.add(vendasCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(715, 138, -1, -1));
+
+        novaVendaCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/novaVendaCaixa.png"))); // NOI18N
+        jPanel1.add(novaVendaCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,6 +216,31 @@ public class VendasADM extends javax.swing.JFrame {
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
+    
+    public void buscarClientes() {
+        try {
+            connection = ConnectBd.getConnection();
+            String sql = "SELECT * FROM cliente";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+            
+            while (result.next()){
+            
+            String cliente = (result.getString(2));
+
+            comboClientes.addItem(cliente);
+            
+            }
+            connection.close();
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void comboClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboClientesMouseClicked
+
+    }//GEN-LAST:event_comboClientesMouseClicked
 
     public static void main(String args[]) {
         
@@ -178,16 +253,22 @@ public class VendasADM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoContatos;
+    private javax.swing.JButton botaoFinalizar;
     private javax.swing.JButton botaoHome;
+    private javax.swing.JButton botaoLimpar;
     private javax.swing.JButton botaoProdutos;
     private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
+    private javax.swing.JLabel caixaCliente;
+    private javax.swing.JComboBox<String> comboClientes;
     private javax.swing.JLabel funcionarioFunction;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
+    private javax.swing.JLabel novaVendaCaixa;
     private javax.swing.JLabel userIcon;
+    private javax.swing.JLabel vendasCaixa;
     // End of variables declaration//GEN-END:variables
 }
