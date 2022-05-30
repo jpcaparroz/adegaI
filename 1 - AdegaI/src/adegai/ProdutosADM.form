@@ -68,7 +68,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="user">
+        <Component class="javax.swing.JLabel" name="funcionarioNome">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Jost" size="24" style="1"/>
@@ -84,7 +84,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="descricaoUser">
+        <Component class="javax.swing.JLabel" name="funcionarioFunction">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Jost" size="12" style="2"/>

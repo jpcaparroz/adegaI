@@ -13,11 +13,18 @@ public class HomeADM extends javax.swing.JFrame {
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  
     }
     
-    public void setFuncionario (String funcionario) {
+    public HomeADM(String funcionario, String funcao){
+        initComponents();
         
-        funcionarioNome.setText(funcionario);  
+        funcionarioNome.setText(funcionario);
+        funcionarioFunction.setText(funcao);
     }
-    
+    public void setFuncionario (String funcionario, String funcao) {
+        
+        funcionarioNome.setText(funcionario);
+        funcionarioFunction.setText(funcao);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -134,60 +141,34 @@ public class HomeADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
         
-        new VendasADM().setVisible(true);
+        new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
+        
+        
     }//GEN-LAST:event_botaoVendasActionPerformed
 
     private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
         
-        new ProdutosADM().setVisible(true);
+        new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoProdutosActionPerformed
 
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
         
-        new ContatosADM().setVisible(true);
+        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         
-        new RelatoriosADM().setVisible(true);
+        new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeADM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new HomeADM().setVisible(true);
