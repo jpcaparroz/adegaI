@@ -9,12 +9,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TelaLogin extends javax.swing.JFrame {
-
+    
+    String nome;
+    String funcao;
+    
     public TelaLogin() throws SQLException {
         initComponents();
         
         gitIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoEntrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+    
+    public String getFuncao(){
+        return funcao;
     }
     
     @SuppressWarnings("unchecked")
@@ -27,7 +38,7 @@ public class TelaLogin extends javax.swing.JFrame {
         userIcon = new javax.swing.JLabel();
         login = new javax.swing.JTextField();
         formaLogin = new javax.swing.JLabel();
-        passwordIcon = new javax.swing.JLabel();
+        senhaIcon = new javax.swing.JLabel();
         senha = new javax.swing.JPasswordField();
         formaSenha = new javax.swing.JLabel();
         botaoEntrar = new javax.swing.JButton();
@@ -58,8 +69,8 @@ public class TelaLogin extends javax.swing.JFrame {
         formaLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/Login/formaTexto.png"))); // NOI18N
         jPanelLogin.add(formaLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 370, -1, -1));
 
-        passwordIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/Login/passwordIcon.png"))); // NOI18N
-        jPanelLogin.add(passwordIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(515, 433, -1, -1));
+        senhaIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/Login/passwordIcon.png"))); // NOI18N
+        jPanelLogin.add(senhaIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(515, 433, -1, -1));
 
         senha.setBackground(new java.awt.Color(255, 255, 255));
         senha.setFont(new java.awt.Font("Jost", 0, 16)); // NOI18N
@@ -128,14 +139,30 @@ public class TelaLogin extends javax.swing.JFrame {
             
             if (dao.verifyFuncionarioLogin(login.getText(), pass) == true && dao.verifyFuncionarioAdm(login.getText(), pass) == false) {
                 
-                HomeADM homeADM = new HomeADM();
-                homeADM.setFuncionario(dao.verifyFuncionario(login.getText(), pass).getNome());
+                //SET DO NOME/FUNCAO DO USUARIO
+                nome = dao.verifyFuncionario(login.getText(), pass).getNome();
+                
+                if(dao.verifyFuncionario(login.getText(), pass).isAdmin() == true){
+                    funcao = "Administrador";
+                } else {funcao = "Padrão";}
+                
+                
+                HomeADM homeADM = new HomeADM(nome, funcao);
                 homeADM.setVisible(true);
                 this.dispose();
                 
             } else if (dao.verifyFuncionarioAdm(login.getText(), pass)){
                 
-                new HomeADM().setVisible(true);
+                //SET DO NOME/FUNCAO DO USUARIO
+                nome = dao.verifyFuncionario(login.getText(), pass).getNome();
+                
+                if(dao.verifyFuncionario(login.getText(), pass).isAdmin() == true){
+                    funcao = "Administrador";
+                } else {funcao = "Padrão";}
+                
+                HomeADM homeADM = new HomeADM();
+                homeADM.setFuncionario(nome, funcao);
+                homeADM.setVisible(true);
                 this.dispose();
             }
             else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
@@ -192,8 +219,8 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelLogin;
     private javax.swing.JTextField login;
     private javax.swing.JLabel logo;
-    private javax.swing.JLabel passwordIcon;
     private javax.swing.JPasswordField senha;
+    private javax.swing.JLabel senhaIcon;
     private javax.swing.JLabel userIcon;
     // End of variables declaration//GEN-END:variables
 }

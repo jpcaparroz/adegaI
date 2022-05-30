@@ -8,7 +8,7 @@ public class AdegaI {
 
         TelaLogin telaLogin = new TelaLogin();
         telaLogin.setVisible(true);
-                
+
     }
     
 }
