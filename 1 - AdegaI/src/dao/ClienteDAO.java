@@ -5,6 +5,7 @@ import model.Cliente;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class ClienteDAO {
     
@@ -23,6 +24,19 @@ public class ClienteDAO {
         int rowsInserted = statement.executeUpdate();
 
         return rowsInserted > 0;
+    }
+    
+        public Cliente verifyCliente() throws SQLException {
+        
+        String sql = "SELECT * FROM cliente";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet result = statement.executeQuery();
+        
+        result.next();
+        Cliente cliente = new Cliente(result.getInt(1), result.getString(2));
+        
+        return cliente;
     }
     
     public void close() throws SQLException {

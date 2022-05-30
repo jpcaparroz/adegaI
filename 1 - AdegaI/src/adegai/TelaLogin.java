@@ -150,6 +150,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 HomeADM homeADM = new HomeADM(nome, funcao);
                 homeADM.setVisible(true);
                 this.dispose();
+                dao.close();
                 
             } else if (dao.verifyFuncionarioAdm(login.getText(), pass)){
                 
@@ -164,6 +165,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 homeADM.setFuncionario(nome, funcao);
                 homeADM.setVisible(true);
                 this.dispose();
+                dao.close();
             }
             else {JOptionPane.showMessageDialog(null, "Usuário ou senha inválido!!!");}
             

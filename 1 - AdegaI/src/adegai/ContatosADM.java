@@ -6,11 +6,7 @@ public class ContatosADM extends javax.swing.JFrame {
     
     public ContatosADM() {
         initComponents();
-        
-        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
     }
 
     public ContatosADM(String funcionario, String funcao){
@@ -18,6 +14,11 @@ public class ContatosADM extends javax.swing.JFrame {
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+                
+        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     
     @SuppressWarnings("unchecked")

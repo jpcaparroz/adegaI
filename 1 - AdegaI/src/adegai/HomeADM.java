@@ -10,7 +10,7 @@ public class HomeADM extends javax.swing.JFrame {
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  
+        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); 
     }
     
     public HomeADM(String funcionario, String funcao){
@@ -18,6 +18,11 @@ public class HomeADM extends javax.swing.JFrame {
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+                
+        botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); 
     }
     public void setFuncionario (String funcionario, String funcao) {
         
