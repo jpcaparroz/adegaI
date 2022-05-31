@@ -18,7 +18,7 @@ public class FuncionarioDAO {
     
     //INSERE FUNCIONARIO
     public boolean insertFuncionario (Funcionario funcionario) throws SQLException {
-        String sql = "INSERT INTO funcionario (nome, login, senha, admin) values (?)";
+        String sql = "INSERT INTO funcionario (nome, login, senha, admin) values (?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, funcionario.getNome());
         statement.setString(2, funcionario.getLogin());
@@ -43,6 +43,18 @@ public class FuncionarioDAO {
         return funcionario;
         }
         return null;
+    }
+    
+    //VERIFICAR LOGIN FUNCIONARIO *CADASTRO
+    public boolean verifyFuncionarioLoginCadastro(String login) throws SQLException {
+        
+        String sql = "SELECT * FROM funcionario WHERE login=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, login);
+        
+        ResultSet result = statement.executeQuery();
+        
+        return result.next();
     }
     
     //VERIFICAR LOGIN FUNCIONARIO

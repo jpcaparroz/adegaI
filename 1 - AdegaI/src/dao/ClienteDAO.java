@@ -16,6 +16,7 @@ public class ClienteDAO {
         connection = ConnectBd.getConnection();
     }
     
+    //INSERE CLIENTE
     public boolean insertCliente (Cliente cliente) throws SQLException {
         String sql = "INSERT INTO cliente (nome) values (?)";
         PreparedStatement statement = connection.prepareStatement(sql);
