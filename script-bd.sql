@@ -45,4 +45,6 @@ DELETE FROM funcionario WHERE id=8;
 
 select * from funcionario;
 
+select * from cliente;
+
 UPDATE funcionario SET nome= 'Pedro' where id=7;
