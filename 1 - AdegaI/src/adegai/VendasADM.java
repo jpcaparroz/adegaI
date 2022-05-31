@@ -28,8 +28,6 @@ public class VendasADM extends javax.swing.JFrame {
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoFinalizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        botaoLimpar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @SuppressWarnings("unchecked")
@@ -153,7 +151,7 @@ public class VendasADM extends javax.swing.JFrame {
                 comboClientesMouseClicked(evt);
             }
         });
-        jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 266, 320, 20));
+        jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 267, 320, 17));
 
         caixaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/clienteCaixa.png"))); // NOI18N
         jPanel1.add(caixaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(181, 238, -1, -1));
@@ -161,6 +159,7 @@ public class VendasADM extends javax.swing.JFrame {
         botaoFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
         botaoFinalizar.setBorder(null);
         botaoFinalizar.setContentAreaFilled(false);
+        botaoFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoFinalizar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
         botaoFinalizar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizarPressed.png"))); // NOI18N
         jPanel1.add(botaoFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(471, 636, -1, -1));
@@ -168,6 +167,7 @@ public class VendasADM extends javax.swing.JFrame {
         botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
         botaoLimpar.setBorder(null);
         botaoLimpar.setContentAreaFilled(false);
+        botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoLimpar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
         botaoLimpar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimparPressed.png"))); // NOI18N
         jPanel1.add(botaoLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 636, -1, -1));
