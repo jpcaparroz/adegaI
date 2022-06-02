@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,7 +24,7 @@ public class ContatosADM extends javax.swing.JFrame {
     
     public ContatosADM() {
         initComponents();
-        
+
         showOffTabelaAdministrador();
         showOffTabelaCliente();
         showOffTabelaFuncionario();
@@ -54,6 +55,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW TABELA CLIENTE
     public void showTabelaCliente() {
+        quantidadeClientesField.show(true);
+        quantidadeClientesField.enable();
         clientePlane.show(true);
         clientePlane.enable();
         clienteTable.enable();
@@ -62,6 +65,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW OFF TABELA CLIENTE
     public void showOffTabelaCliente() {
+        quantidadeClientesField.show(false);
+        quantidadeClientesField.disable();        
         clientePlane.show(false);
         clientePlane.disable();
         clienteTable.disable();
@@ -70,6 +75,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW TABELA FUNCIONARIO
     public void showTabelaFuncionario() {
+        quantidadeFuncionarioField.show(true);
+        quantidadeFuncionarioField.enable();
         funcionarioPane.show(true);
         funcionarioPane.enable();
         funcionarioTable.enable();
@@ -79,6 +86,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW OFF TABELA FUNCIONARIO
     public void showOffTabelaFuncionario() {
+        quantidadeFuncionarioField.show(false);
+        quantidadeFuncionarioField.disable();
         funcionarioPane.show(false);
         funcionarioPane.disable();
         funcionarioTable.disable();
@@ -87,6 +96,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW TABELA ADMINISTRADOR
     public void showTabelaAdministrador() {
+        quantidadeAdministradorField.show(true);
+        quantidadeAdministradorField.enable();
         administradorPane.show(true);
         administradorPane.enable();
         administradorTable.enable();
@@ -95,6 +106,8 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SHOW OFF TABELA ADMINISTRADOR
     public void showOffTabelaAdministrador() {
+        quantidadeAdministradorField.show(false);
+        quantidadeAdministradorField.disable();
         administradorPane.show(false);
         administradorPane.disable();
         administradorTable.disable();
@@ -233,6 +246,27 @@ public class ContatosADM extends javax.swing.JFrame {
         connection.close();
     }
     
+    //BUSCA QUANTIDADE DE CLIENTE NO BANCO
+    public void buscarQuantidadeCliente (JLabel field) throws SQLException {
+        ClienteDAO cdao = new ClienteDAO();
+        
+        field.setText(Integer.toString(cdao.quantidadeCliente()));
+    }
+    
+    //BUSCA QUANTIDADE DE FUNCIONARIO NO BANCO
+    public void buscarQuantidadeFuncionario (JLabel field) throws SQLException {
+        FuncionarioDAO fdao = new FuncionarioDAO();
+        
+        field.setText(Integer.toString(fdao.quantidadeFuncionario()));
+    }
+    
+    //BUSCA QUANTIDADE DE ADMINISTRADOR NO BANCO
+    public void buscarQuantidadeAdministrador (JLabel field) throws SQLException {
+        FuncionarioDAO adao = new FuncionarioDAO();
+        
+        field.setText(Integer.toString(adao.quantidadeAdministrador()));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -267,6 +301,9 @@ public class ContatosADM extends javax.swing.JFrame {
         cadastrarClienteBotao = new javax.swing.JButton();
         cadastrarAdministradorBotao = new javax.swing.JButton();
         limparBotao = new javax.swing.JButton();
+        quantidadeAdministradorField = new javax.swing.JLabel();
+        quantidadeFuncionarioField = new javax.swing.JLabel();
+        quantidadeClientesField = new javax.swing.JLabel();
         clientePlane = new javax.swing.JScrollPane();
         clienteTable = new javax.swing.JTable();
         funcionarioPane = new javax.swing.JScrollPane();
@@ -521,6 +558,24 @@ public class ContatosADM extends javax.swing.JFrame {
             }
         });
         jPanel1.add(limparBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 636, -1, -1));
+
+        quantidadeAdministradorField.setFont(new java.awt.Font("Jost", 3, 64)); // NOI18N
+        quantidadeAdministradorField.setForeground(new java.awt.Color(255, 209, 0));
+        quantidadeAdministradorField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quantidadeAdministradorField.setText("0");
+        jPanel1.add(quantidadeAdministradorField, new org.netbeans.lib.awtextra.AbsoluteConstraints(751, 380, 485, 60));
+
+        quantidadeFuncionarioField.setFont(new java.awt.Font("Jost", 3, 64)); // NOI18N
+        quantidadeFuncionarioField.setForeground(new java.awt.Color(255, 209, 0));
+        quantidadeFuncionarioField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quantidadeFuncionarioField.setText("0");
+        jPanel1.add(quantidadeFuncionarioField, new org.netbeans.lib.awtextra.AbsoluteConstraints(751, 380, 485, 60));
+
+        quantidadeClientesField.setFont(new java.awt.Font("Jost", 3, 64)); // NOI18N
+        quantidadeClientesField.setForeground(new java.awt.Color(255, 209, 0));
+        quantidadeClientesField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quantidadeClientesField.setText("0");
+        jPanel1.add(quantidadeClientesField, new org.netbeans.lib.awtextra.AbsoluteConstraints(751, 380, 485, 60));
 
         clienteTable.setBackground(new java.awt.Color(255, 255, 255));
         clienteTable.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
@@ -792,28 +847,36 @@ public class ContatosADM extends javax.swing.JFrame {
 
     //BOTAO SELECIONAR TABELA
     private void selecionarTabelaBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarTabelaBotaoActionPerformed
-
-        if (tipoRelatorioCombo.getSelectedItem().toString().equals("Cliente")) {
+        
+        DefaultTableModel defaultCliente = (DefaultTableModel) clienteTable.getModel();
+        DefaultTableModel defaultFuncionario = (DefaultTableModel) funcionarioTable.getModel();
+        DefaultTableModel defaultAdministrador = (DefaultTableModel) administradorTable.getModel();
+        
+        if (tipoRelatorioCombo.getSelectedItem().toString().equals("Cliente")) {       
             String sql = "SELECT * FROM cliente";
             PreparedStatement statement;
 
             showTabelaCliente();
+            
+            defaultCliente.setRowCount(0);
             showOffTabelaFuncionario();
             showOffTabelaAdministrador();
             
             try {
+                buscarQuantidadeCliente(quantidadeClientesField);
                 connection = ConnectBd.getConnection();
                 statement = connection.prepareStatement(sql);
                 ResultSet result = statement.executeQuery();
-
+                
                 while (result.next()) {
                     String id = String.valueOf(result.getInt(1));
                     String nome = result.getString(2);
 
                     String tabelaCliente[] = {id, nome};
-                    DefaultTableModel defaultCliente = (DefaultTableModel) clienteTable.getModel();
+                    
 
                     defaultCliente.addRow(tabelaCliente);
+                    
                 }
                 connection.close();
             } catch (SQLException ex) {
@@ -822,12 +885,15 @@ public class ContatosADM extends javax.swing.JFrame {
         } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Funcionário")) {
             String sql = "SELECT * FROM funcionario WHERE admin=0";
             PreparedStatement statement;
-            clienteTable.getValue
+
             showTabelaFuncionario();
+            
+            defaultFuncionario.setRowCount(0);
             showOffTabelaCliente();
             showOffTabelaAdministrador();
 
             try {
+                buscarQuantidadeFuncionario(quantidadeFuncionarioField);
                 connection = ConnectBd.getConnection();
                 statement = connection.prepareStatement(sql);
                 ResultSet result = statement.executeQuery();
@@ -839,7 +905,6 @@ public class ContatosADM extends javax.swing.JFrame {
                     String senha = result.getString(4);
 
                     String tabelaFuncionario[] = {id, nome, login, senha};
-                    DefaultTableModel defaultFuncionario = (DefaultTableModel) funcionarioTable.getModel();
 
                     defaultFuncionario.addRow(tabelaFuncionario);
                 }
@@ -852,10 +917,13 @@ public class ContatosADM extends javax.swing.JFrame {
             PreparedStatement statement;
             
             showTabelaAdministrador();
+            
+            defaultAdministrador.setRowCount(0);
             showOffTabelaCliente();
             showOffTabelaFuncionario();
 
             try {
+                buscarQuantidadeAdministrador(quantidadeAdministradorField);
                 connection = ConnectBd.getConnection();
                 statement = connection.prepareStatement(sql);
                 ResultSet result = statement.executeQuery();
@@ -867,7 +935,6 @@ public class ContatosADM extends javax.swing.JFrame {
                     String senha = result.getString(4);
 
                     String tabelaAdministrador[] = {id, nome, login, senha};
-                    DefaultTableModel defaultAdministrador = (DefaultTableModel) administradorTable.getModel();
 
                     defaultAdministrador.addRow(tabelaAdministrador);
                 }
@@ -877,7 +944,7 @@ public class ContatosADM extends javax.swing.JFrame {
             }
         } 
     }//GEN-LAST:event_selecionarTabelaBotaoActionPerformed
-        
+    
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(() -> {
@@ -923,6 +990,9 @@ public class ContatosADM extends javax.swing.JFrame {
     private javax.swing.JLabel novoClienteCaixa;
     private javax.swing.JLabel novoContatoCaixa;
     private javax.swing.JLabel novoFuncionarioCaixa;
+    private javax.swing.JLabel quantidadeAdministradorField;
+    private javax.swing.JLabel quantidadeClientesField;
+    private javax.swing.JLabel quantidadeFuncionarioField;
     private javax.swing.JButton selecionarBotao;
     private javax.swing.JButton selecionarExcluirBotao;
     private javax.swing.JButton selecionarTabelaBotao;
