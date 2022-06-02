@@ -41,10 +41,20 @@ INSERT INTO cliente (nome) values ('attilio');
 
 INSERT INTO funcionario (nome,login,senha, admin) values ('joao', 'jotinha', '321', 1);
 
-DELETE FROM funcionario WHERE id=8;
+INSERT INTO produto (nome,valor,quantidade) values ('Skol (350ml)', 2.5, 5);
+
+DELETE FROM funcionario WHERE id=31;
+
+DELETE FROM cliente WHERE id=14;
 
 select * from funcionario;
+
+select * from produto;
+
+SELECT * FROM funcionario WHERE login='pedro';
 
 select * from cliente;
 
 UPDATE funcionario SET nome= 'Pedro' where id=7;
+
+UPDATE produto SET quantidade=10 WHERE nome='Skol (350ml)';
