@@ -100,6 +100,28 @@ public class FuncionarioDAO {
         return funcionario;
     }
     
+    //RETORNA QUANTIDADE DE ADMINISTRADORES
+    public int quantidadeAdministrador () throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM funcionario WHERE admin=1";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        int count = result.getInt("total");
+        return count;
+    }
+    
+    //RETORNA QUANTIDADE DE FUNCIONÁRIOS
+    public int quantidadeFuncionario () throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM funcionario WHERE admin=0";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        int count = result.getInt("total");
+        return count;
+    }
+    
     public void close() throws SQLException{
         connection.close();
     }
