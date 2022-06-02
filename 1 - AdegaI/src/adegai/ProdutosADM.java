@@ -1,16 +1,47 @@
 package adegai;
 
+import bd.ConnectBd;
+import dao.ProdutoDAO;
+import model.Produto;
+
+import java.sql.Connection;
 import java.awt.Cursor;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import model.SoNumeros;
 
 public class ProdutosADM extends javax.swing.JFrame {
-
+    
+    Connection connection;
+    
     public ProdutosADM() {
         initComponents();
+        
+        qntProduto(quantidadeProtudosField);
+        quantidadeEstoque.setDocument(new SoNumeros());
+        quantidadeProduto.setDocument(new SoNumeros()); 
+        valorProduto.setDocument(new SoNumeros());
+        
+        buscarProdutos(excluirPordutosCombo);
+        buscarProdutos(controleEstoqueCombo);
 
     }
 
     public ProdutosADM(String funcionario, String funcao){
         initComponents();
+        
+        quantidadeEstoque.setDocument(new SoNumeros());
+        quantidadeProduto.setDocument(new SoNumeros()); 
+        valorProduto.setDocument(new SoNumeros());
+        
+        buscarProdutos(excluirPordutosCombo);
+        buscarProdutos(controleEstoqueCombo);
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
@@ -19,6 +50,29 @@ public class ProdutosADM extends javax.swing.JFrame {
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    
+    //BUSCA TODOS PRODUTOS
+    public void buscarProdutos(JComboBox combo) {
+        try {
+            connection = ConnectBd.getConnection();
+            String sql = "SELECT * FROM produto";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+            
+            while (result.next()){
+            
+            String produto = (result.getString(2));
+
+            combo.addItem(produto);
+            
+            }
+            connection.close();
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -35,8 +89,23 @@ public class ProdutosADM extends javax.swing.JFrame {
         botaoProdutos = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
         botaoRelatorios = new javax.swing.JButton();
+        quantidadeProtudosField = new javax.swing.JLabel();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
+        nomeProduto = new javax.swing.JTextField();
+        quantidadeProduto = new javax.swing.JTextField();
+        valorProduto = new javax.swing.JTextField();
+        cadastrarBotao = new javax.swing.JButton();
+        tipoProdutoCombo = new javax.swing.JComboBox<>();
+        limparBotao = new javax.swing.JButton();
+        quantidadeEstoque = new javax.swing.JTextField();
+        tipoEstoqueCombo = new javax.swing.JComboBox<>();
+        lancarBotao = new javax.swing.JButton();
+        controleEstoqueCombo = new javax.swing.JComboBox<>();
+        excluirBotao = new javax.swing.JButton();
+        excluirPordutosCombo = new javax.swing.JComboBox<>();
+        caixas = new javax.swing.JLabel();
+        bgProdutos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,11 +188,139 @@ public class ProdutosADM extends javax.swing.JFrame {
         });
         jPanel1.add(botaoRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
 
+        quantidadeProtudosField.setFont(new java.awt.Font("Jost", 3, 64)); // NOI18N
+        quantidadeProtudosField.setForeground(new java.awt.Color(255, 209, 0));
+        quantidadeProtudosField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quantidadeProtudosField.setText("0");
+        jPanel1.add(quantidadeProtudosField, new org.netbeans.lib.awtextra.AbsoluteConstraints(751, 380, 485, 60));
+
         menuLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuLateral.png"))); // NOI18N
         jPanel1.add(menuLateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         menuCima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuCima.png"))); // NOI18N
         jPanel1.add(menuCima, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        nomeProduto.setBackground(new java.awt.Color(255, 255, 255));
+        nomeProduto.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        nomeProduto.setForeground(new java.awt.Color(32, 32, 32));
+        nomeProduto.setText("Nome...");
+        nomeProduto.setBorder(null);
+        jPanel1.add(nomeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 249, 193, 22));
+
+        quantidadeProduto.setBackground(new java.awt.Color(255, 255, 255));
+        quantidadeProduto.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        quantidadeProduto.setForeground(new java.awt.Color(32, 32, 32));
+        quantidadeProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        quantidadeProduto.setBorder(null);
+        jPanel1.add(quantidadeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 303, 70, 22));
+
+        valorProduto.setBackground(new java.awt.Color(255, 255, 255));
+        valorProduto.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        valorProduto.setForeground(new java.awt.Color(0, 153, 51));
+        valorProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valorProduto.setText("0,00");
+        valorProduto.setBorder(null);
+        jPanel1.add(valorProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 359, 70, 22));
+
+        cadastrarBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoCadastrar.png"))); // NOI18N
+        cadastrarBotao.setBorder(null);
+        cadastrarBotao.setBorderPainted(false);
+        cadastrarBotao.setContentAreaFilled(false);
+        cadastrarBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cadastrarBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoCadastrar.png"))); // NOI18N
+        cadastrarBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoCadastrarPressed.png"))); // NOI18N
+        cadastrarBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cadastrarBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(461, 402, -1, -1));
+
+        tipoProdutoCombo.setBackground(new java.awt.Color(255, 255, 255));
+        tipoProdutoCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        tipoProdutoCombo.setForeground(new java.awt.Color(0, 0, 0));
+        tipoProdutoCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lata", "Garrafa", "Fardo", "Pet", "Caixa" }));
+        tipoProdutoCombo.setBorder(null);
+        tipoProdutoCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.add(tipoProdutoCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, 108, 21));
+
+        limparBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLimpar.png"))); // NOI18N
+        limparBotao.setBorder(null);
+        limparBotao.setBorderPainted(false);
+        limparBotao.setContentAreaFilled(false);
+        limparBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        limparBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLimpar.png"))); // NOI18N
+        limparBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLimparPressed.png"))); // NOI18N
+        limparBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(limparBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(251, 402, -1, -1));
+
+        quantidadeEstoque.setBackground(new java.awt.Color(255, 255, 255));
+        quantidadeEstoque.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        quantidadeEstoque.setForeground(new java.awt.Color(32, 32, 32));
+        quantidadeEstoque.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        quantidadeEstoque.setText("0");
+        quantidadeEstoque.setBorder(null);
+        jPanel1.add(quantidadeEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 568, 80, 22));
+
+        tipoEstoqueCombo.setBackground(new java.awt.Color(255, 255, 255));
+        tipoEstoqueCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        tipoEstoqueCombo.setForeground(new java.awt.Color(0, 0, 0));
+        tipoEstoqueCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Entrada", "Saída", "Balanço" }));
+        tipoEstoqueCombo.setBorder(null);
+        tipoEstoqueCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.add(tipoEstoqueCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 623, 93, 20));
+
+        lancarBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLancar.png"))); // NOI18N
+        lancarBotao.setBorder(null);
+        lancarBotao.setBorderPainted(false);
+        lancarBotao.setContentAreaFilled(false);
+        lancarBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lancarBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLancar.png"))); // NOI18N
+        lancarBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoLancarPressed.png"))); // NOI18N
+        lancarBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lancarBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(lancarBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 621, -1, -1));
+
+        controleEstoqueCombo.setBackground(new java.awt.Color(255, 255, 255));
+        controleEstoqueCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        controleEstoqueCombo.setForeground(new java.awt.Color(0, 0, 0));
+        controleEstoqueCombo.setBorder(null);
+        controleEstoqueCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.add(controleEstoqueCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 568, 190, 22));
+
+        excluirBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
+        excluirBotao.setBorder(null);
+        excluirBotao.setBorderPainted(false);
+        excluirBotao.setContentAreaFilled(false);
+        excluirBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        excluirBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
+        excluirBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoExcluirPressed.png"))); // NOI18N
+        excluirBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(excluirBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(929, 621, -1, -1));
+
+        excluirPordutosCombo.setBackground(new java.awt.Color(255, 255, 255));
+        excluirPordutosCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        excluirPordutosCombo.setForeground(new java.awt.Color(0, 0, 0));
+        excluirPordutosCombo.setBorder(null);
+        excluirPordutosCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.add(excluirPordutosCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 563, 190, 22));
+
+        caixas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/caixas.png"))); // NOI18N
+        jPanel1.add(caixas, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
+
+        bgProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/bgProdutos.png"))); // NOI18N
+        jPanel1.add(bgProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,7 +336,18 @@ public class ProdutosADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //BUSCA QUANTIDADE DE PRODUTOS CADASTRADOS
+    public void qntProduto(JLabel qnt){
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            
+            quantidadeProtudosField.setText(Integer.toString(pdao.quantidadeProduto()));
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
         
         new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
@@ -163,6 +371,57 @@ public class ProdutosADM extends javax.swing.JFrame {
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
+    
+    //EXCLUI PRODUTO
+    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
+        try {
+            Produto produto = new Produto(excluirPordutosCombo.getSelectedItem().toString());
+            ProdutoDAO pdao = new ProdutoDAO();
+            
+            if (pdao.deletProduto(produto.getNome())) {
+                
+                JOptionPane.showMessageDialog(null, "Produto Excluído com sucesso!");
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_excluirBotaoActionPerformed
+    
+    //LANÇA NO ESTOQUE
+    private void lancarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lancarBotaoActionPerformed
+        try {
+            Produto produto = new Produto(Integer.valueOf(quantidadeEstoque.getText()), controleEstoqueCombo.getSelectedItem().toString());
+            ProdutoDAO pdao = new ProdutoDAO();
+            
+            if (tipoEstoqueCombo.getSelectedItem().toString().equals("Balanço")) {
+                
+                pdao.balancoQuantidadeProduto(produto);
+                JOptionPane.showMessageDialog(null, "Atualizado com sucesso!!!");
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lancarBotaoActionPerformed
+
+    private void limparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBotaoActionPerformed
+        
+    }//GEN-LAST:event_limparBotaoActionPerformed
+    
+    //CADASTRA PRODUTO
+    private void cadastrarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBotaoActionPerformed
+        try {
+            Produto produto = new Produto(nomeProduto.getText(), Double.parseDouble(valorProduto.getText().replaceAll(",", ".")), Integer.parseInt(quantidadeProduto.getText()), tipoProdutoCombo.getSelectedItem().toString());
+            ProdutoDAO pdao = new ProdutoDAO();
+            
+            if (pdao.insertProduto(produto)) {
+                
+                JOptionPane.showMessageDialog(null, "Produto Cadastrado =)");
+            } 
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar...");
+            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cadastrarBotaoActionPerformed
 
     public static void main(String args[]) {
         
@@ -174,17 +433,32 @@ public class ProdutosADM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgProdutos;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoHome;
     private javax.swing.JButton botaoProdutos;
     private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
+    private javax.swing.JButton cadastrarBotao;
+    private javax.swing.JLabel caixas;
+    private javax.swing.JComboBox<String> controleEstoqueCombo;
+    private javax.swing.JButton excluirBotao;
+    private javax.swing.JComboBox<String> excluirPordutosCombo;
     private javax.swing.JLabel funcionarioFunction;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton lancarBotao;
+    private javax.swing.JButton limparBotao;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
+    private javax.swing.JTextField nomeProduto;
+    private javax.swing.JTextField quantidadeEstoque;
+    private javax.swing.JTextField quantidadeProduto;
+    private javax.swing.JLabel quantidadeProtudosField;
+    private javax.swing.JComboBox<String> tipoEstoqueCombo;
+    private javax.swing.JComboBox<String> tipoProdutoCombo;
     private javax.swing.JLabel userIcon;
+    private javax.swing.JTextField valorProduto;
     // End of variables declaration//GEN-END:variables
 }

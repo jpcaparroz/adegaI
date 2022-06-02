@@ -1,32 +1,44 @@
 package adegai;
 
+import bd.ConnectBd;
 import dao.ClienteDAO;
 import dao.FuncionarioDAO;
-
-import java.awt.Cursor;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-
 import model.Funcionario;
 import model.Cliente;
 
+import java.awt.Cursor;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ContatosADM extends javax.swing.JFrame {
+    
+    Connection connection;
     
     public ContatosADM() {
         initComponents();
         
+        showOffTabelaAdministrador();
+        showOffTabelaCliente();
+        showOffTabelaFuncionario();
         showOffCliente(); 
         showOffFuncionario();
         showOffAdministrador();
         
     }
 
-    public ContatosADM(String funcionario, String funcao){
+    public ContatosADM(String funcionario, String funcao) {
         initComponents();
         
+        showOffTabelaAdministrador();
+        showOffTabelaCliente();
+        showOffTabelaFuncionario();
         showOffCliente(); 
         showOffFuncionario();
         showOffAdministrador();
@@ -38,6 +50,55 @@ public class ContatosADM extends javax.swing.JFrame {
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    
+    //SHOW TABELA CLIENTE
+    public void showTabelaCliente() {
+        clientePlane.show(true);
+        clientePlane.enable();
+        clienteTable.enable();
+        clienteTable.show(true);        
+    }
+    
+    //SHOW OFF TABELA CLIENTE
+    public void showOffTabelaCliente() {
+        clientePlane.show(false);
+        clientePlane.disable();
+        clienteTable.disable();
+        clienteTable.show(false);
+    }
+    
+    //SHOW TABELA FUNCIONARIO
+    public void showTabelaFuncionario() {
+        funcionarioPane.show(true);
+        funcionarioPane.enable();
+        funcionarioTable.enable();
+        funcionarioTable.show(true);        
+
+    }
+    
+    //SHOW OFF TABELA FUNCIONARIO
+    public void showOffTabelaFuncionario() {
+        funcionarioPane.show(false);
+        funcionarioPane.disable();
+        funcionarioTable.disable();
+        funcionarioTable.show(false);
+    }
+    
+    //SHOW TABELA ADMINISTRADOR
+    public void showTabelaAdministrador() {
+        administradorPane.show(true);
+        administradorPane.enable();
+        administradorTable.enable();
+        administradorTable.show(true);        
+    }
+    
+    //SHOW OFF TABELA ADMINISTRADOR
+    public void showOffTabelaAdministrador() {
+        administradorPane.show(false);
+        administradorPane.disable();
+        administradorTable.disable();
+        administradorTable.show(false);
     }
     
     //SHOW NO CLIENTE
@@ -130,6 +191,48 @@ public class ContatosADM extends javax.swing.JFrame {
         cadastrarAdministradorBotao.disable();
     }
     
+    //BUSCA TODOS CONTATOS
+    public void buscarContatos(JComboBox combo) throws SQLException {
+
+        connection = ConnectBd.getConnection();
+
+        if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")) {
+            combo.removeAllItems();
+            String sql = "SELECT * FROM cliente";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String contato = (result.getInt(1) + "-> "+ result.getString(2));
+                combo.addItem(contato);
+            }
+        } else if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Funcionário")) {
+            combo.removeAllItems();
+            String sql = "SELECT * FROM funcionario WHERE admin=0";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String contato = (result.getString(2) + " | Login: " + result.getString(3));
+                combo.addItem(contato);
+            }
+        } else {
+            combo.removeAllItems();
+            String sql = "SELECT * FROM funcionario WHERE admin=1";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                String contato = (result.getString(2) + " | Login: " + result.getString(3));
+                combo.addItem(contato);
+            }
+        }
+        connection.close();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -156,14 +259,27 @@ public class ContatosADM extends javax.swing.JFrame {
         novoFuncionarioCaixa = new javax.swing.JLabel();
         nomeCliente = new javax.swing.JTextField();
         novoClienteCaixa = new javax.swing.JLabel();
+        selecionarTabelaBotao = new javax.swing.JButton();
+        tipoRelatorioCombo = new javax.swing.JComboBox<>();
         selecionarBotao = new javax.swing.JButton();
         comboContato = new javax.swing.JComboBox<>();
         cadastrarFuncionarioBotao = new javax.swing.JButton();
         cadastrarClienteBotao = new javax.swing.JButton();
         cadastrarAdministradorBotao = new javax.swing.JButton();
         limparBotao = new javax.swing.JButton();
+        clientePlane = new javax.swing.JScrollPane();
+        clienteTable = new javax.swing.JTable();
+        funcionarioPane = new javax.swing.JScrollPane();
+        funcionarioTable = new javax.swing.JTable();
+        administradorPane = new javax.swing.JScrollPane();
+        administradorTable = new javax.swing.JTable();
         novoContatoCaixa = new javax.swing.JLabel();
-        todosContatosCaixa = new javax.swing.JLabel();
+        selecionarExcluirBotao = new javax.swing.JButton();
+        excluirTipoContatoCombo = new javax.swing.JComboBox<>();
+        excluirPordutosCombo = new javax.swing.JComboBox<>();
+        excluirBotao = new javax.swing.JButton();
+        caixa = new javax.swing.JLabel();
+        bgContatos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -310,6 +426,28 @@ public class ContatosADM extends javax.swing.JFrame {
         novoClienteCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/nomeCliente.png"))); // NOI18N
         jPanel1.add(novoClienteCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 360, -1, -1));
 
+        selecionarTabelaBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionar.png"))); // NOI18N
+        selecionarTabelaBotao.setBorder(null);
+        selecionarTabelaBotao.setContentAreaFilled(false);
+        selecionarTabelaBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selecionarTabelaBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionar.png"))); // NOI18N
+        selecionarTabelaBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionarPressed.png"))); // NOI18N
+        selecionarTabelaBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecionarTabelaBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(selecionarTabelaBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 162, -1, -1));
+
+        tipoRelatorioCombo.setBackground(new java.awt.Color(255, 255, 255));
+        tipoRelatorioCombo.setFont(new java.awt.Font("Jost", 0, 32)); // NOI18N
+        tipoRelatorioCombo.setForeground(new java.awt.Color(32, 32, 32));
+        tipoRelatorioCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cliente", "Funcionário", "Administrador" }));
+        tipoRelatorioCombo.setBorder(null);
+        tipoRelatorioCombo.setMinimumSize(new java.awt.Dimension(106, 40));
+        tipoRelatorioCombo.setPreferredSize(new java.awt.Dimension(106, 40));
+        jPanel1.add(tipoRelatorioCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 150, 230, 40));
+
         selecionarBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionar.png"))); // NOI18N
         selecionarBotao.setBorder(null);
         selecionarBotao.setContentAreaFilled(false);
@@ -384,11 +522,111 @@ public class ContatosADM extends javax.swing.JFrame {
         });
         jPanel1.add(limparBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 636, -1, -1));
 
+        clienteTable.setBackground(new java.awt.Color(255, 255, 255));
+        clienteTable.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        clienteTable.setForeground(new java.awt.Color(32, 32, 32));
+        clienteTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome"
+            }
+        ));
+        clienteTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        clientePlane.setViewportView(clienteTable);
+        clienteTable.getAccessibleContext().setAccessibleName("");
+
+        jPanel1.add(clientePlane, new org.netbeans.lib.awtextra.AbsoluteConstraints(753, 200, 480, 170));
+
+        funcionarioTable.setBackground(new java.awt.Color(255, 255, 255));
+        funcionarioTable.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        funcionarioTable.setForeground(new java.awt.Color(32, 32, 32));
+        funcionarioTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "Login", "Senha"
+            }
+        ));
+        funcionarioTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        funcionarioPane.setViewportView(funcionarioTable);
+
+        jPanel1.add(funcionarioPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(753, 200, 480, 170));
+
+        administradorTable.setBackground(new java.awt.Color(255, 255, 255));
+        administradorTable.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        administradorTable.setForeground(new java.awt.Color(32, 32, 32));
+        administradorTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "Login", "Senha"
+            }
+        ));
+        administradorTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        administradorPane.setViewportView(administradorTable);
+
+        jPanel1.add(administradorPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(753, 200, 480, 170));
+
         novoContatoCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/novoContato.png"))); // NOI18N
         jPanel1.add(novoContatoCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
 
-        todosContatosCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/caixaContatos.png"))); // NOI18N
-        jPanel1.add(todosContatosCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(715, 138, -1, -1));
+        selecionarExcluirBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionar.png"))); // NOI18N
+        selecionarExcluirBotao.setBorder(null);
+        selecionarExcluirBotao.setContentAreaFilled(false);
+        selecionarExcluirBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        selecionarExcluirBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionar.png"))); // NOI18N
+        selecionarExcluirBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/botaoSelecionarPressed.png"))); // NOI18N
+        selecionarExcluirBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecionarExcluirBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(selecionarExcluirBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(1115, 555, -1, -1));
+
+        excluirTipoContatoCombo.setBackground(new java.awt.Color(255, 255, 255));
+        excluirTipoContatoCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        excluirTipoContatoCombo.setForeground(new java.awt.Color(0, 0, 0));
+        excluirTipoContatoCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cliente", "Funcionário", "Administrador" }));
+        excluirTipoContatoCombo.setBorder(null);
+        excluirTipoContatoCombo.setMinimumSize(new java.awt.Dimension(106, 40));
+        excluirTipoContatoCombo.setPreferredSize(new java.awt.Dimension(106, 40));
+        jPanel1.add(excluirTipoContatoCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 555, 180, 17));
+
+        excluirPordutosCombo.setBackground(new java.awt.Color(255, 255, 255));
+        excluirPordutosCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        excluirPordutosCombo.setForeground(new java.awt.Color(0, 0, 0));
+        excluirPordutosCombo.setBorder(null);
+        excluirPordutosCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        excluirPordutosCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirPordutosComboActionPerformed(evt);
+            }
+        });
+        jPanel1.add(excluirPordutosCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 609, 190, 22));
+
+        excluirBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
+        excluirBotao.setBorder(null);
+        excluirBotao.setBorderPainted(false);
+        excluirBotao.setContentAreaFilled(false);
+        excluirBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        excluirBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
+        excluirBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoExcluirPressed.png"))); // NOI18N
+        excluirBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(excluirBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 650, -1, -1));
+
+        caixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/caixaContatos.png"))); // NOI18N
+        jPanel1.add(caixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(715, 138, -1, -1));
+
+        bgContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/bgContatos.png"))); // NOI18N
+        jPanel1.add(bgContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -447,7 +685,8 @@ public class ContatosADM extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_cadastrarClienteBotaoActionPerformed
-
+    
+    //SELECIONAR TIPO DE CADASTRADO
     private void selecionarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarBotaoActionPerformed
         
         if(comboContato.getSelectedItem().toString().equals("Administrador")){
@@ -471,7 +710,8 @@ public class ContatosADM extends javax.swing.JFrame {
             showOffCliente();
         }
     }//GEN-LAST:event_selecionarBotaoActionPerformed
-
+    
+    //LIMPA TODAS INFORMAÇÕES
     private void limparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBotaoActionPerformed
         
         showOffCliente();
@@ -483,7 +723,7 @@ public class ContatosADM extends javax.swing.JFrame {
     //CADASTRAR FUNCIONARIO
     private void cadastrarFuncionarioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarFuncionarioBotaoActionPerformed
         try {
-            Funcionario funcionario = new Funcionario(funcionarioNome.getText(), loginFuncionario.getText(), senhaFuncionario.getText(), false);
+            Funcionario funcionario = new Funcionario(nomeFuncionario.getText(), loginFuncionario.getText(), senhaFuncionario.getText(), false);
             FuncionarioDAO fdao = new FuncionarioDAO();
             
             if (funcionarioNome.getText().isEmpty() || fdao.verifyFuncionarioLoginCadastro(loginFuncionario.getText()) == true) {
@@ -517,16 +757,139 @@ public class ContatosADM extends javax.swing.JFrame {
         }   
     }//GEN-LAST:event_cadastrarAdministradorBotaoActionPerformed
 
-    public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ContatosADM().setVisible(true);
+    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
+        /*try {
+            Produto produto = new Produto(excluirPordutosCombo.getSelectedItem().toString());
+            ProdutoDAO pdao = new ProdutoDAO();
+
+            if (pdao.deletProduto(produto.getNome())) {
+
+                JOptionPane.showMessageDialog(null, "Produto Excluído com sucesso!");
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+*/
+    }//GEN-LAST:event_excluirBotaoActionPerformed
+
+    private void excluirPordutosComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirPordutosComboActionPerformed
+        
+        if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")){
+            
+            excluirPordutosCombo.getSelectedItem().toString();
+        }
+    }//GEN-LAST:event_excluirPordutosComboActionPerformed
+    
+    //SELECIONAR TIPO DE CONTATO PARA EXCLUIR
+    private void selecionarExcluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarExcluirBotaoActionPerformed
+        
+        try {
+            buscarContatos(excluirPordutosCombo);
+        } catch (SQLException ex) {
+            Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_selecionarExcluirBotaoActionPerformed
+
+    //BOTAO SELECIONAR TABELA
+    private void selecionarTabelaBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarTabelaBotaoActionPerformed
+
+        if (tipoRelatorioCombo.getSelectedItem().toString().equals("Cliente")) {
+            String sql = "SELECT * FROM cliente";
+            PreparedStatement statement;
+
+            showTabelaCliente();
+            showOffTabelaFuncionario();
+            showOffTabelaAdministrador();
+            
+            try {
+                connection = ConnectBd.getConnection();
+                statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    String id = String.valueOf(result.getInt(1));
+                    String nome = result.getString(2);
+
+                    String tabelaCliente[] = {id, nome};
+                    DefaultTableModel defaultCliente = (DefaultTableModel) clienteTable.getModel();
+
+                    defaultCliente.addRow(tabelaCliente);
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Funcionário")) {
+            String sql = "SELECT * FROM funcionario WHERE admin=0";
+            PreparedStatement statement;
+            clienteTable.getValue
+            showTabelaFuncionario();
+            showOffTabelaCliente();
+            showOffTabelaAdministrador();
+
+            try {
+                connection = ConnectBd.getConnection();
+                statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    String id = String.valueOf(result.getInt(1));
+                    String nome = result.getString(2);
+                    String login = result.getString(3);
+                    String senha = result.getString(4);
+
+                    String tabelaFuncionario[] = {id, nome, login, senha};
+                    DefaultTableModel defaultFuncionario = (DefaultTableModel) funcionarioTable.getModel();
+
+                    defaultFuncionario.addRow(tabelaFuncionario);
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            String sql = "SELECT * FROM funcionario WHERE admin=1";
+            PreparedStatement statement;
+            
+            showTabelaAdministrador();
+            showOffTabelaCliente();
+            showOffTabelaFuncionario();
+
+            try {
+                connection = ConnectBd.getConnection();
+                statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    String id = String.valueOf(result.getInt(1));
+                    String nome = result.getString(2);
+                    String login = result.getString(3);
+                    String senha = result.getString(4);
+
+                    String tabelaAdministrador[] = {id, nome, login, senha};
+                    DefaultTableModel defaultAdministrador = (DefaultTableModel) administradorTable.getModel();
+
+                    defaultAdministrador.addRow(tabelaAdministrador);
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+    }//GEN-LAST:event_selecionarTabelaBotaoActionPerformed
+        
+    public static void main(String args[]) {
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new ContatosADM().setVisible(true);
+
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane administradorPane;
+    private javax.swing.JTable administradorTable;
+    private javax.swing.JLabel bgContatos;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoHome;
     private javax.swing.JButton botaoProdutos;
@@ -535,9 +898,17 @@ public class ContatosADM extends javax.swing.JFrame {
     private javax.swing.JButton cadastrarAdministradorBotao;
     private javax.swing.JButton cadastrarClienteBotao;
     private javax.swing.JButton cadastrarFuncionarioBotao;
+    private javax.swing.JLabel caixa;
+    private javax.swing.JScrollPane clientePlane;
+    private javax.swing.JTable clienteTable;
     private javax.swing.JComboBox<String> comboContato;
+    private javax.swing.JButton excluirBotao;
+    private javax.swing.JComboBox<String> excluirPordutosCombo;
+    private javax.swing.JComboBox<String> excluirTipoContatoCombo;
     private javax.swing.JLabel funcionarioFunction;
     private javax.swing.JLabel funcionarioNome;
+    private javax.swing.JScrollPane funcionarioPane;
+    private javax.swing.JTable funcionarioTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton limparBotao;
     private javax.swing.JTextField loginAdministrador;
@@ -553,9 +924,11 @@ public class ContatosADM extends javax.swing.JFrame {
     private javax.swing.JLabel novoContatoCaixa;
     private javax.swing.JLabel novoFuncionarioCaixa;
     private javax.swing.JButton selecionarBotao;
+    private javax.swing.JButton selecionarExcluirBotao;
+    private javax.swing.JButton selecionarTabelaBotao;
     private javax.swing.JTextField senhaAdministrador;
     private javax.swing.JTextField senhaFuncionario;
-    private javax.swing.JLabel todosContatosCaixa;
+    private javax.swing.JComboBox<String> tipoRelatorioCombo;
     private javax.swing.JLabel userIcon;
     // End of variables declaration//GEN-END:variables
 }

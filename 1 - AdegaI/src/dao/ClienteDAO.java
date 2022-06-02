@@ -27,7 +27,8 @@ public class ClienteDAO {
         return rowsInserted > 0;
     }
     
-        public Cliente verifyCliente() throws SQLException {
+    //VERIFICA CLIENTE
+    public Cliente verifyCliente() throws SQLException {
         
         String sql = "SELECT * FROM cliente";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -38,6 +39,17 @@ public class ClienteDAO {
         Cliente cliente = new Cliente(result.getInt(1), result.getString(2));
         
         return cliente;
+    }
+    
+    //RETORNA QUANTIDADE DE CLIENTES
+    public int quantidadeCliente () throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM cliente";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        int count = result.getInt("total");
+        return count;
     }
     
     public void close() throws SQLException {
