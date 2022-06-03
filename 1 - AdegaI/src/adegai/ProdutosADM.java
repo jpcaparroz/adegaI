@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import model.SoNumeros;
+import javax.swing.table.DefaultTableModel;
 
 public class ProdutosADM extends javax.swing.JFrame {
     
@@ -22,8 +23,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     public ProdutosADM() {
         initComponents();
-        
-        qntProduto(quantidadeProtudosField);
+
         quantidadeEstoque.setDocument(new SoNumeros());
         quantidadeProduto.setDocument(new SoNumeros()); 
         valorProduto.setDocument(new SoNumeros());
@@ -54,6 +54,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //BUSCA TODOS PRODUTOS
     public void buscarProdutos(JComboBox combo) {
+        combo.removeAllItems();
         try {
             connection = ConnectBd.getConnection();
             String sql = "SELECT * FROM produto";
@@ -104,6 +105,9 @@ public class ProdutosADM extends javax.swing.JFrame {
         controleEstoqueCombo = new javax.swing.JComboBox<>();
         excluirBotao = new javax.swing.JButton();
         excluirPordutosCombo = new javax.swing.JComboBox<>();
+        atualizarBotao = new javax.swing.JButton();
+        produtoPlane = new javax.swing.JScrollPane();
+        produtoTable = new javax.swing.JTable();
         caixas = new javax.swing.JLabel();
         bgProdutos = new javax.swing.JLabel();
 
@@ -316,6 +320,35 @@ public class ProdutosADM extends javax.swing.JFrame {
         excluirPordutosCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.add(excluirPordutosCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 563, 190, 22));
 
+        atualizarBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoAtualizar.png"))); // NOI18N
+        atualizarBotao.setBorder(null);
+        atualizarBotao.setContentAreaFilled(false);
+        atualizarBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        atualizarBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoAtualizar.png"))); // NOI18N
+        atualizarBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoAtualizarPressed.png"))); // NOI18N
+        atualizarBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atualizarBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(atualizarBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 170, -1, -1));
+
+        produtoTable.setBackground(new java.awt.Color(255, 255, 255));
+        produtoTable.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        produtoTable.setForeground(new java.awt.Color(32, 32, 32));
+        produtoTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "Valor", "Quantidade", "Tipo"
+            }
+        ));
+        produtoTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        produtoPlane.setViewportView(produtoTable);
+
+        jPanel1.add(produtoPlane, new org.netbeans.lib.awtextra.AbsoluteConstraints(753, 200, 480, 170));
+
         caixas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/caixas.png"))); // NOI18N
         jPanel1.add(caixas, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
 
@@ -422,6 +455,38 @@ public class ProdutosADM extends javax.swing.JFrame {
             //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cadastrarBotaoActionPerformed
+    
+    //ATUALIZA TABELA DE PRODUTOS
+    private void atualizarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBotaoActionPerformed
+        String sql = "SELECT * FROM produto";
+            PreparedStatement statement;
+            DefaultTableModel defaultProduto = (DefaultTableModel) produtoTable.getModel();
+            defaultProduto.setRowCount(0);
+            qntProduto(quantidadeProtudosField);
+            buscarProdutos(excluirPordutosCombo);
+            buscarProdutos(controleEstoqueCombo);
+            
+            try {
+                connection = ConnectBd.getConnection();
+                statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery();
+                
+                while (result.next()) {
+                    String id = String.valueOf(result.getInt(1));
+                    String nome = result.getString(2);
+                    String valor = Double.toString(result.getDouble(3));
+                    String quantidade = Integer.toString(result.getInt(4));
+                    String tipo = result.getString(5);
+
+                    String tabelaProduto[] = {id, nome, valor, quantidade, tipo};
+
+                    defaultProduto.addRow(tabelaProduto);
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_atualizarBotaoActionPerformed
 
     public static void main(String args[]) {
         
@@ -433,6 +498,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton atualizarBotao;
     private javax.swing.JLabel bgProdutos;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoHome;
@@ -453,6 +519,8 @@ public class ProdutosADM extends javax.swing.JFrame {
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
     private javax.swing.JTextField nomeProduto;
+    private javax.swing.JScrollPane produtoPlane;
+    private javax.swing.JTable produtoTable;
     private javax.swing.JTextField quantidadeEstoque;
     private javax.swing.JTextField quantidadeProduto;
     private javax.swing.JLabel quantidadeProtudosField;

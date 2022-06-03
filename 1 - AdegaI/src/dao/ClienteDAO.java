@@ -52,6 +52,17 @@ public class ClienteDAO {
         return count;
     }
     
+    //EXCLUI CLIENTE
+    public boolean deletCliente(int id) throws SQLException {
+        String sql = "DELETE FROM cliente WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+
+        int rowsDeleted = statement.executeUpdate();
+
+        return rowsDeleted > 0;
+    }
+    
     public void close() throws SQLException {
         connection.close();
     }

@@ -217,9 +217,11 @@ public class ContatosADM extends javax.swing.JFrame {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String contato = (result.getInt(1) + "-> "+ result.getString(2));
+                String contato = (Integer.toString(result.getInt(1)) + " |Nome: " + result.getString(2));
+                
                 combo.addItem(contato);
             }
+            
         } else if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Funcionário")) {
             combo.removeAllItems();
             String sql = "SELECT * FROM funcionario WHERE admin=0";
@@ -228,7 +230,7 @@ public class ContatosADM extends javax.swing.JFrame {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String contato = (result.getString(2) + " | Login: " + result.getString(3));
+                String contato = (Integer.toString(result.getInt(1)) + " |Nome: " + result.getString(2));
                 combo.addItem(contato);
             }
         } else {
@@ -239,7 +241,7 @@ public class ContatosADM extends javax.swing.JFrame {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String contato = (result.getString(2) + " | Login: " + result.getString(3));
+                String contato = (Integer.toString(result.getInt(1)) + " |Nome: " + result.getString(2));
                 combo.addItem(contato);
             }
         }
@@ -313,7 +315,7 @@ public class ContatosADM extends javax.swing.JFrame {
         novoContatoCaixa = new javax.swing.JLabel();
         selecionarExcluirBotao = new javax.swing.JButton();
         excluirTipoContatoCombo = new javax.swing.JComboBox<>();
-        excluirPordutosCombo = new javax.swing.JComboBox<>();
+        excluirContatoCombo = new javax.swing.JComboBox<>();
         excluirBotao = new javax.swing.JButton();
         caixa = new javax.swing.JLabel();
         bgContatos = new javax.swing.JLabel();
@@ -651,17 +653,17 @@ public class ContatosADM extends javax.swing.JFrame {
         excluirTipoContatoCombo.setPreferredSize(new java.awt.Dimension(106, 40));
         jPanel1.add(excluirTipoContatoCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 555, 180, 17));
 
-        excluirPordutosCombo.setBackground(new java.awt.Color(255, 255, 255));
-        excluirPordutosCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
-        excluirPordutosCombo.setForeground(new java.awt.Color(0, 0, 0));
-        excluirPordutosCombo.setBorder(null);
-        excluirPordutosCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        excluirPordutosCombo.addActionListener(new java.awt.event.ActionListener() {
+        excluirContatoCombo.setBackground(new java.awt.Color(255, 255, 255));
+        excluirContatoCombo.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        excluirContatoCombo.setForeground(new java.awt.Color(0, 0, 0));
+        excluirContatoCombo.setBorder(null);
+        excluirContatoCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        excluirContatoCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirPordutosComboActionPerformed(evt);
+                excluirContatoComboActionPerformed(evt);
             }
         });
-        jPanel1.add(excluirPordutosCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 609, 190, 22));
+        jPanel1.add(excluirContatoCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 609, 190, 22));
 
         excluirBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
         excluirBotao.setBorder(null);
@@ -768,7 +770,6 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //LIMPA TODAS INFORMAÇÕES
     private void limparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBotaoActionPerformed
-        
         showOffCliente();
         showOffFuncionario();
         showOffAdministrador();
@@ -811,35 +812,54 @@ public class ContatosADM extends javax.swing.JFrame {
             Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }//GEN-LAST:event_cadastrarAdministradorBotaoActionPerformed
-
-    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
-        /*try {
-            Produto produto = new Produto(excluirPordutosCombo.getSelectedItem().toString());
-            ProdutoDAO pdao = new ProdutoDAO();
-
-            if (pdao.deletProduto(produto.getNome())) {
-
-                JOptionPane.showMessageDialog(null, "Produto Excluído com sucesso!");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
-        }
-*/
-    }//GEN-LAST:event_excluirBotaoActionPerformed
-
-    private void excluirPordutosComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirPordutosComboActionPerformed
+    
+    //TRANSFORMAR STRING EM ID
+    public int getId(String contato){
+        String[] dados = contato.split(" ");
         
-        if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")){
-            
-            excluirPordutosCombo.getSelectedItem().toString();
+        return Integer.parseInt(dados[0]);
+        
+    }
+    
+    //EXCLUIR CONTATO
+    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
+        if (excluirContatoCombo.getSelectedItem() == null) {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");
+        }  else if(excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")){
+            try {
+                Cliente cliente = new Cliente (excluirContatoCombo.getSelectedItem().toString());
+                ClienteDAO cdao = new ClienteDAO();
+
+                if (cdao.deletCliente(getId(excluirContatoCombo.getSelectedItem().toString()))) {
+
+                    JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
+                } else {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");}
+            } catch (SQLException ex) {
+                Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if(excluirTipoContatoCombo.getSelectedItem().toString().equals("Funcionário") || excluirTipoContatoCombo.getSelectedItem().toString().equals("Administrador")){
+            try {
+                Funcionario funcionario = new Funcionario (excluirContatoCombo.getSelectedItem().toString());
+                FuncionarioDAO fdao = new FuncionarioDAO();
+
+                if (fdao.deletFuncionario(getId(excluirContatoCombo.getSelectedItem().toString()))) {
+
+                    JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
+                } else {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");}
+            } catch (SQLException ex) {
+                Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         }
-    }//GEN-LAST:event_excluirPordutosComboActionPerformed
+    }//GEN-LAST:event_excluirBotaoActionPerformed
+    
+    
+    private void excluirContatoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirContatoComboActionPerformed
+    }//GEN-LAST:event_excluirContatoComboActionPerformed
     
     //SELECIONAR TIPO DE CONTATO PARA EXCLUIR
     private void selecionarExcluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarExcluirBotaoActionPerformed
         
         try {
-            buscarContatos(excluirPordutosCombo);
+            buscarContatos(excluirContatoCombo);
         } catch (SQLException ex) {
             Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -945,6 +965,7 @@ public class ContatosADM extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_selecionarTabelaBotaoActionPerformed
     
+    
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(() -> {
@@ -970,7 +991,7 @@ public class ContatosADM extends javax.swing.JFrame {
     private javax.swing.JTable clienteTable;
     private javax.swing.JComboBox<String> comboContato;
     private javax.swing.JButton excluirBotao;
-    private javax.swing.JComboBox<String> excluirPordutosCombo;
+    private javax.swing.JComboBox<String> excluirContatoCombo;
     private javax.swing.JComboBox<String> excluirTipoContatoCombo;
     private javax.swing.JLabel funcionarioFunction;
     private javax.swing.JLabel funcionarioNome;

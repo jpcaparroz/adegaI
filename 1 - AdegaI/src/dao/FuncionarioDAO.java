@@ -122,6 +122,17 @@ public class FuncionarioDAO {
         return count;
     }
     
+    //EXCLUI FUNCIONARIO
+    public boolean deletFuncionario(int id) throws SQLException {
+        String sql = "DELETE FROM funcionario WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+
+        int rowsDeleted = statement.executeUpdate();
+
+        return rowsDeleted > 0;
+    }
+    
     public void close() throws SQLException{
         connection.close();
     }
