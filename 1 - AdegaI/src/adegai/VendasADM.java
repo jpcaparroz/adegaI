@@ -10,13 +10,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VendasADM extends javax.swing.JFrame {
-    
     Connection connection;
+    
     public VendasADM() {
         initComponents();
         buscarClientes();
     }
     
+    //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
     public VendasADM(String funcionario, String funcao){
         initComponents();
         
@@ -39,6 +40,7 @@ public class VendasADM extends javax.swing.JFrame {
         userIcon = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
         funcionarioFunction = new javax.swing.JLabel();
+        vendasBanner = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
         botaoProdutos = new javax.swing.JButton();
@@ -73,6 +75,9 @@ public class VendasADM extends javax.swing.JFrame {
         funcionarioFunction.setForeground(new java.awt.Color(255, 255, 255));
         funcionarioFunction.setText("administrador");
         jPanel1.add(funcionarioFunction, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
+
+        vendasBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/vendas.png"))); // NOI18N
+        jPanel1.add(vendasBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(1026, 15, -1, -1));
 
         botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIcon.png"))); // NOI18N
         botaoHome.setBorder(null);
@@ -146,11 +151,6 @@ public class VendasADM extends javax.swing.JFrame {
         comboClientes.setToolTipText("");
         comboClientes.setBorder(null);
         comboClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        comboClientes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                comboClientesMouseClicked(evt);
-            }
-        });
         jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 267, 320, 17));
 
         caixaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/clienteCaixa.png"))); // NOI18N
@@ -192,25 +192,29 @@ public class VendasADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
         
         new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
-
+    
+    //DIRECIONA PARA A TELA PRODUTOS
     private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
         
         new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoProdutosActionPerformed
 
+    //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
         
         new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
+    //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
@@ -238,16 +242,11 @@ public class VendasADM extends javax.swing.JFrame {
             Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void comboClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboClientesMouseClicked
-
-    }//GEN-LAST:event_comboClientesMouseClicked
-
+    
     public static void main(String args[]) {
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VendasADM().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new VendasADM().setVisible(true);
         });
     }
 
@@ -269,6 +268,7 @@ public class VendasADM extends javax.swing.JFrame {
     private javax.swing.JLabel menuLateral;
     private javax.swing.JLabel novaVendaCaixa;
     private javax.swing.JLabel userIcon;
+    private javax.swing.JLabel vendasBanner;
     private javax.swing.JLabel vendasCaixa;
     // End of variables declaration//GEN-END:variables
 }

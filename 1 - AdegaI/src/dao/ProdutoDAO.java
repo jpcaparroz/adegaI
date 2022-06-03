@@ -41,7 +41,7 @@ public class ProdutoDAO {
         return rowsDeleted > 0;
     }
     
-    //INSERE QUANTIDADE PRODUTO
+    //INSERE #BALANÇO QUANTIDADE PRODUTO
     public boolean balancoQuantidadeProduto (Produto produto) throws SQLException {
         String sql = "UPDATE produto SET quantidade=? WHERE nome=?";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -51,6 +51,19 @@ public class ProdutoDAO {
         int rowsInserted = statement.executeUpdate();
 
         return rowsInserted > 0;
+    }
+    
+    //RETORNA QUANTIDADE DO ESTOQUE DO PRODUTO
+    public int quantidadeEstoqueProduto(Produto produto) throws SQLException {
+        String sql = "SELECT quantidade FROM produto WHERE nome =?";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, produto.getNome());
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        
+        return result.getInt(1);
     }
     
     //RETORNA QUANTIDADE DE PRODUTOS
