@@ -8,7 +8,7 @@ public class ConnectBd {
     
     static String urlBD = "jdbc:mysql://localhost:3306/testes_adegai"; //url do banco de dados
     static String username = "root"; //login do banco de dados
-    static String password = "root"; //senha do banco de dados
+    static String password = "2509"; //senha do banco de dados
 
     public static Connection getConnection() throws SQLException{
         Connection connection = null;

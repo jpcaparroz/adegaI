@@ -18,8 +18,8 @@ import model.SoNumeros;
 import javax.swing.table.DefaultTableModel;
 
 public class ProdutosADM extends javax.swing.JFrame {
-    
     Connection connection;
+    AdegaI adegai = new AdegaI();
     
     public ProdutosADM() {
         initComponents();
@@ -30,9 +30,9 @@ public class ProdutosADM extends javax.swing.JFrame {
         
         buscarProdutos(excluirPordutosCombo);
         buscarProdutos(controleEstoqueCombo);
-
     }
-
+    
+    //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
     public ProdutosADM(String funcionario, String funcao){
         initComponents();
         
@@ -81,6 +81,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        produtosBanner = new javax.swing.JLabel();
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
@@ -115,6 +116,9 @@ public class ProdutosADM extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        produtosBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/produtos.png"))); // NOI18N
+        jPanel1.add(produtosBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 14, -1, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
         jPanel1.add(logoIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -207,7 +211,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         nomeProduto.setBackground(new java.awt.Color(255, 255, 255));
         nomeProduto.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
         nomeProduto.setForeground(new java.awt.Color(32, 32, 32));
-        nomeProduto.setText("Nome...");
+        nomeProduto.setText("Nome do Produto");
         nomeProduto.setBorder(null);
         jPanel1.add(nomeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(214, 249, 193, 22));
 
@@ -377,28 +381,33 @@ public class ProdutosADM extends javax.swing.JFrame {
             
             quantidadeProtudosField.setText(Integer.toString(pdao.quantidadeProduto()));
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            
+            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
         
         new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
 
+    //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
         
         new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
+    //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
         
         new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
-
+    
+    //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
@@ -413,46 +422,80 @@ public class ProdutosADM extends javax.swing.JFrame {
             
             if (pdao.deletProduto(produto.getNome())) {
                 
-                JOptionPane.showMessageDialog(null, "Produto Excluído com sucesso!");
+                adegai.mensagemPopUp("Produto Excluído com sucesso!");
+                atualizarBotaoActionPerformed(evt);
             }    
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            adegai.mensagemPopUp("Erro!");
+            atualizarBotaoActionPerformed(evt);
+            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_excluirBotaoActionPerformed
     
     //LANÇA NO ESTOQUE
     private void lancarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lancarBotaoActionPerformed
-        try {
+        if(quantidadeEstoque.getText().isEmpty() || quantidadeEstoque.getText().isBlank()) {
+            
+            adegai.mensagemPopUp("Erro!");      
+        } else try {
             Produto produto = new Produto(Integer.valueOf(quantidadeEstoque.getText()), controleEstoqueCombo.getSelectedItem().toString());
             ProdutoDAO pdao = new ProdutoDAO();
             
             if (tipoEstoqueCombo.getSelectedItem().toString().equals("Balanço")) {
                 
                 pdao.balancoQuantidadeProduto(produto);
-                JOptionPane.showMessageDialog(null, "Atualizado com sucesso!!!");
+                adegai.mensagemPopUp("Balanço realizado com sucesso!!!");
+                
+                atualizarBotaoActionPerformed(evt);
+            } else if (tipoEstoqueCombo.getSelectedItem().toString().equals("Entrada")) {
+                
+                int atual = pdao.quantidadeEstoqueProduto(produto);
+                produto.setQuantidade(atual + produto.getQuantidade());
+                
+                pdao.balancoQuantidadeProduto(produto);
+                adegai.mensagemPopUp("Entrada realizado com sucesso!!!");
+                atualizarBotaoActionPerformed(evt);  
+            } else {
+                
+                int atual = pdao.quantidadeEstoqueProduto(produto);
+                produto.setQuantidade(atual - produto.getQuantidade());
+                
+                pdao.balancoQuantidadeProduto(produto);
+                adegai.mensagemPopUp("Saída realizada com sucesso!!!");
+                atualizarBotaoActionPerformed(evt); 
             }    
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            
+            atualizarBotaoActionPerformed(evt);
+            adegai.mensagemPopUp("Erro");
+            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lancarBotaoActionPerformed
-
+    
+    //LIMPA TODOS CAMPOS DA CRIAÇÃO DO PRODUTO
     private void limparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBotaoActionPerformed
-        
+        nomeProduto.setText("Nome do Produto");
+        quantidadeProduto.setText("0");
+        valorProduto.setText("0,00");
+        atualizarBotaoActionPerformed(evt);
     }//GEN-LAST:event_limparBotaoActionPerformed
     
     //CADASTRA PRODUTO
     private void cadastrarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBotaoActionPerformed
-        try {
-            Produto produto = new Produto(nomeProduto.getText(), Double.parseDouble(valorProduto.getText().replaceAll(",", ".")), Integer.parseInt(quantidadeProduto.getText()), tipoProdutoCombo.getSelectedItem().toString());
-            ProdutoDAO pdao = new ProdutoDAO();
-            
-            if (pdao.insertProduto(produto)) {
-                
-                JOptionPane.showMessageDialog(null, "Produto Cadastrado =)");
-            } 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar...");
-            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+        if (nomeProduto.getText().isEmpty() || quantidadeProduto.getText().isEmpty() || valorProduto.getText().isEmpty()) {
+            adegai.mensagemPopUp("Erro!");
+        } else {
+            try {
+                Produto produto = new Produto(nomeProduto.getText(), Double.parseDouble(valorProduto.getText().replaceAll(",", ".")), Integer.parseInt(quantidadeProduto.getText()), tipoProdutoCombo.getSelectedItem().toString());
+                ProdutoDAO pdao = new ProdutoDAO();
+
+                pdao.insertProduto(produto);
+                adegai.mensagemPopUp("Produto Cadastrado =)");
+                atualizarBotaoActionPerformed(evt);
+            } catch (SQLException ex) {
+                adegai.mensagemPopUp("Erro ao cadastrar...");
+                atualizarBotaoActionPerformed(evt);
+            }
         }
     }//GEN-LAST:event_cadastrarBotaoActionPerformed
     
@@ -487,13 +530,12 @@ public class ProdutosADM extends javax.swing.JFrame {
                 Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_atualizarBotaoActionPerformed
-
+    
+    //MAIN
     public static void main(String args[]) {
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ProdutosADM().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ProdutosADM().setVisible(true);
         });
     }
 
@@ -521,6 +563,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     private javax.swing.JTextField nomeProduto;
     private javax.swing.JScrollPane produtoPlane;
     private javax.swing.JTable produtoTable;
+    private javax.swing.JLabel produtosBanner;
     private javax.swing.JTextField quantidadeEstoque;
     private javax.swing.JTextField quantidadeProduto;
     private javax.swing.JLabel quantidadeProtudosField;

@@ -13,36 +13,41 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class ContatosADM extends javax.swing.JFrame {
-    
+public class ContatosADM extends javax.swing.JFrame { 
     Connection connection;
+    AdegaI adegai = new AdegaI();
     
+    //CONSTRUTOR PADRÃO
     public ContatosADM() {
         initComponents();
 
-        showOffTabelaAdministrador();
-        showOffTabelaCliente();
-        showOffTabelaFuncionario();
-        showOffCliente(); 
-        showOffFuncionario();
-        showOffAdministrador();
+        adegai.showOffTabela(clientePlane, clienteTable, quantidadeClientesField);
+        adegai.showOffTabela(funcionarioPane, funcionarioTable, quantidadeFuncionarioField);
+        adegai.showOffTabela(administradorPane, administradorTable, quantidadeAdministradorField);
         
+        showOff(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
+        showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
+        showOff(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
     }
-
+    
+    //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
     public ContatosADM(String funcionario, String funcao) {
         initComponents();
         
-        showOffTabelaAdministrador();
-        showOffTabelaCliente();
-        showOffTabelaFuncionario();
-        showOffCliente(); 
-        showOffFuncionario();
-        showOffAdministrador();
+        adegai.showOffTabela(clientePlane, clienteTable);
+        adegai.showOffTabela(funcionarioPane, funcionarioTable);
+        adegai.showOffTabela(administradorPane, administradorTable);
+        
+        showOff(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
+        showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
+        showOff(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
@@ -53,155 +58,64 @@ public class ContatosADM extends javax.swing.JFrame {
         botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     
-    //SHOW TABELA CLIENTE
-    public void showTabelaCliente() {
-        quantidadeClientesField.show(true);
-        quantidadeClientesField.enable();
-        clientePlane.show(true);
-        clientePlane.enable();
-        clienteTable.enable();
-        clienteTable.show(true);        
+    //CONSTRUTOR 1 SHOW
+    public void show(JLabel label, JTextField field, JButton botao) {
+        label.show(true);
+        label.enable();
+        field.show(true);
+        field.enable();
+        field.setText("Nome...");
+        botao.enable();
+        botao.show(true);
     }
     
-    //SHOW OFF TABELA CLIENTE
-    public void showOffTabelaCliente() {
-        quantidadeClientesField.show(false);
-        quantidadeClientesField.disable();        
-        clientePlane.show(false);
-        clientePlane.disable();
-        clienteTable.disable();
-        clienteTable.show(false);
+    //CONSTRUTOR 2 SHOW
+    public void show(JLabel label, JTextField field1, JTextField field2, JTextField field3, JButton botao) {
+        label.show(true);
+        label.enable();
+        field1.show(true);
+        field1.enable();
+        field1.setText("Nome...");
+        field2.setText("Login...");
+        field2.show(true);
+        field2.enable();
+        field3.setText("Senha...");
+        field3.show(true);
+        field3.enable();
+        botao.enable();
+        botao.show(true);
     }
     
-    //SHOW TABELA FUNCIONARIO
-    public void showTabelaFuncionario() {
-        quantidadeFuncionarioField.show(true);
-        quantidadeFuncionarioField.enable();
-        funcionarioPane.show(true);
-        funcionarioPane.enable();
-        funcionarioTable.enable();
-        funcionarioTable.show(true);        
-
+    //CONSTRUTOR 1 SHOWOFF
+    public void showOff(JLabel label, JTextField field, JButton botao) {
+        label.show(false);
+        label.disable();
+        field.show(false);
+        field.disable();
+        field.setText(null);
+        botao.disable();
+        botao.show(false);
     }
     
-    //SHOW OFF TABELA FUNCIONARIO
-    public void showOffTabelaFuncionario() {
-        quantidadeFuncionarioField.show(false);
-        quantidadeFuncionarioField.disable();
-        funcionarioPane.show(false);
-        funcionarioPane.disable();
-        funcionarioTable.disable();
-        funcionarioTable.show(false);
-    }
-    
-    //SHOW TABELA ADMINISTRADOR
-    public void showTabelaAdministrador() {
-        quantidadeAdministradorField.show(true);
-        quantidadeAdministradorField.enable();
-        administradorPane.show(true);
-        administradorPane.enable();
-        administradorTable.enable();
-        administradorTable.show(true);        
-    }
-    
-    //SHOW OFF TABELA ADMINISTRADOR
-    public void showOffTabelaAdministrador() {
-        quantidadeAdministradorField.show(false);
-        quantidadeAdministradorField.disable();
-        administradorPane.show(false);
-        administradorPane.disable();
-        administradorTable.disable();
-        administradorTable.show(false);
-    }
-    
-    //SHOW NO CLIENTE
-    public void showCliente() {
-        novoClienteCaixa.show(true);
-        novoClienteCaixa.enable();
-        nomeCliente.show(true);
-        nomeCliente.enable();
-        nomeCliente.setText("Nome...");
-        cadastrarClienteBotao.enable();
-        cadastrarClienteBotao.show(true);
-    }
-    
-    //SHOW OFF NO CLIENTE
-    public void showOffCliente() {
-        novoClienteCaixa.show(false);
-        novoClienteCaixa.disable();
-        nomeCliente.show(false);
-        nomeCliente.disable();
-        nomeCliente.setText(null);
-        cadastrarClienteBotao.disable();
-        cadastrarClienteBotao.show(false);
-    }
-    
-    //SHOW OFF NO FUNCIONARIO
-    public void showOffFuncionario(){
-        nomeFuncionario.show(false);
-        nomeFuncionario.disable();
-        nomeFuncionario.setText(null);
-        loginFuncionario.show(false);
-        loginFuncionario.disable();
-        loginFuncionario.setText(null);
-        senhaFuncionario.show(false);
-        senhaFuncionario.disable();
-        senhaFuncionario.setText(null);
-        novoFuncionarioCaixa.show(false);
-        novoFuncionarioCaixa.disable();
-        cadastrarFuncionarioBotao.disable();
-        cadastrarFuncionarioBotao.show(false);
-    }
-    
-    //SHOW NO FUNCIONARIO
-    public void showFuncionario() {
-        nomeFuncionario.show(true);
-        nomeFuncionario.enable();
-        nomeFuncionario.setText("Nome...");
-        loginFuncionario.show(true);
-        loginFuncionario.enable();
-        loginFuncionario.setText("Login...");
-        senhaFuncionario.show(true);
-        senhaFuncionario.enable();
-        senhaFuncionario.setText("Senha...");
-        novoFuncionarioCaixa.show(true);
-        novoFuncionarioCaixa.enable();
-        cadastrarFuncionarioBotao.enable();
-        cadastrarFuncionarioBotao.show(true);
-    }
-    
-    //SHOW NO ADMINISTRADOR
-    public void showAdministrador() {
-        novoAdministradorCaixa.show(true);
-        nomeAdministrador.show(true);
-        loginAdministrador.show(true);
-        senhaAdministrador.show(true);
-        novoAdministradorCaixa.enable();
-        nomeAdministrador.enable();
-        nomeAdministrador.setText("Nome...");
-        loginAdministrador.enable();
-        loginAdministrador.setText("Login...");
-        senhaAdministrador.enable();
-        senhaAdministrador.setText("Senha...");
-        cadastrarAdministradorBotao.show(true);
-        cadastrarAdministradorBotao.enable();
-    }
-    
-    //SHOW OFF NO ADMINISTRADOR
-    public void showOffAdministrador() {
-        novoAdministradorCaixa.show(false);
-        nomeAdministrador.show(false);
-        loginAdministrador.show(false);
-        senhaAdministrador.show(false);
-        novoAdministradorCaixa.enable();
-        nomeAdministrador.disable();
-        nomeAdministrador.setText(null);
-        loginAdministrador.disable();
-        loginAdministrador.setText(null);
-        senhaAdministrador.disable();
-        senhaAdministrador.setText(null);
-        cadastrarAdministradorBotao.show(false);
-        cadastrarAdministradorBotao.disable();
+    //CONSTRUTOR 2 SHOWOFF
+    public void showOff(JLabel label, JTextField field1, JTextField field2, JTextField field3, JButton botao) {
+        label.show(false);
+        label.disable();
+        
+        field1.show(false);
+        field1.disable();
+        field1.setText(null);
+        
+        field2.setText(null);
+        field2.show(false);
+        field2.disable();
+        
+        field3.setText(null);
+        field3.show(false);
+        field3.disable();
+        
+        botao.disable();
+        botao.show(false);
     }
     
     //BUSCA TODOS CONTATOS
@@ -274,6 +188,7 @@ public class ContatosADM extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
@@ -324,6 +239,9 @@ public class ContatosADM extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/contatos.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 14, -1, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
         jPanel1.add(logoIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -658,11 +576,6 @@ public class ContatosADM extends javax.swing.JFrame {
         excluirContatoCombo.setForeground(new java.awt.Color(0, 0, 0));
         excluirContatoCombo.setBorder(null);
         excluirContatoCombo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        excluirContatoCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirContatoComboActionPerformed(evt);
-            }
-        });
         jPanel1.add(excluirContatoCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(908, 609, 190, 22));
 
         excluirBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/botaoEcluir.png"))); // NOI18N
@@ -699,25 +612,29 @@ public class ContatosADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
         
         new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
-
+    
+    //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
         
         new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
-
+    
+    //DIRECIONA PARA A TELA RELATÓRIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
-
+    
+    //DIRECIONA PARA A TELA PRODUTOS
     private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
         
         new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
@@ -731,72 +648,82 @@ public class ContatosADM extends javax.swing.JFrame {
             ClienteDAO cdao = new ClienteDAO();
             
             if (nomeCliente.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Erro ao cadastrar Cliente!");  
+                adegai.mensagemPopUp("Erro ao cadastrar Cliente!");  
+                
             } else if (nomeCliente.isEnabled()){
                 cdao.insertCliente(cliente);
-                JOptionPane.showMessageDialog(null, "Cliente Cadastrado!!!");
+                adegai.mensagemPopUp("Cliente Cadastrado!!!");
             }
             cdao.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_cadastrarClienteBotaoActionPerformed
     
     //SELECIONAR TIPO DE CADASTRADO
     private void selecionarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarBotaoActionPerformed
         
         if(comboContato.getSelectedItem().toString().equals("Administrador")){
-            showAdministrador();
+            show(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
             
-            showOffFuncionario();
-            showOffCliente();
+            showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
+            showOff(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
             
         } else if (comboContato.getSelectedItem().toString().equals("Cliente")) { 
             
-            showCliente();
+            show(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
             
-            showOffAdministrador();
-            showOffFuncionario();
+            showOff(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
+            showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
                         
         } else {
             
-            showFuncionario();
+            show(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
             
-            showOffAdministrador();
-            showOffCliente();
+            showOff(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
+            showOff(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
         }
     }//GEN-LAST:event_selecionarBotaoActionPerformed
     
     //LIMPA TODAS INFORMAÇÕES
     private void limparBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBotaoActionPerformed
-        showOffCliente();
-        showOffFuncionario();
-        showOffAdministrador();
+        showOff(novoClienteCaixa, nomeCliente, cadastrarClienteBotao);
+        showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);
+        showOff(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
         
     }//GEN-LAST:event_limparBotaoActionPerformed
     
     //CADASTRAR FUNCIONARIO
     private void cadastrarFuncionarioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarFuncionarioBotaoActionPerformed
+        if(funcionarioNome.getText().isEmpty() || loginFuncionario.getText().isEmpty() || senhaFuncionario.getText().isEmpty()) {
+            adegai.mensagemPopUp("Erro!");
+        } else 
+        
         try {
             Funcionario funcionario = new Funcionario(nomeFuncionario.getText(), loginFuncionario.getText(), senhaFuncionario.getText(), false);
             FuncionarioDAO fdao = new FuncionarioDAO();
             
             if (funcionarioNome.getText().isEmpty() || fdao.verifyFuncionarioLoginCadastro(loginFuncionario.getText()) == true) {
                 JOptionPane.showMessageDialog(null, "Erro ao cadastrar Funcionário"); 
+                
             } else if (funcionarioNome.isEnabled()) {
+                
                 fdao.insertFuncionario(funcionario);
                 JOptionPane.showMessageDialog(null, "Funcionário Cadastrado!!!");
             }
             fdao.close();
+            
         } catch (SQLException ex) {
+            
             Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }//GEN-LAST:event_cadastrarFuncionarioBotaoActionPerformed
     
     //CADASTRAR ADMINISTRADOR
     private void cadastrarAdministradorBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarAdministradorBotaoActionPerformed
-        try {
+        if (nomeAdministrador.getText().isEmpty() || loginAdministrador.getText().isEmpty() || senhaAdministrador.getText().isEmpty()){
+            adegai.mensagemPopUp("Erro!");
+        } else try {
             Funcionario administrador = new Funcionario(nomeAdministrador.getText(), loginAdministrador.getText(), senhaAdministrador.getText(), true);
             FuncionarioDAO adao = new FuncionarioDAO();
             
@@ -809,7 +736,7 @@ public class ContatosADM extends javax.swing.JFrame {
             }
             adao.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Testes.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }//GEN-LAST:event_cadastrarAdministradorBotaoActionPerformed
     
@@ -818,46 +745,56 @@ public class ContatosADM extends javax.swing.JFrame {
         String[] dados = contato.split(" ");
         
         return Integer.parseInt(dados[0]);
-        
     }
     
     //EXCLUIR CONTATO
     private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
-        if (excluirContatoCombo.getSelectedItem() == null) {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");
-        }  else if(excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")){
+        selecionarTabelaBotaoActionPerformed(evt);
+        
+        if (excluirContatoCombo.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir contato");
+            
+        } else if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Cliente")) {
             try {
-                Cliente cliente = new Cliente (excluirContatoCombo.getSelectedItem().toString());
+                Cliente cliente = new Cliente(excluirContatoCombo.getSelectedItem().toString());
                 ClienteDAO cdao = new ClienteDAO();
-
+                
                 if (cdao.deletCliente(getId(excluirContatoCombo.getSelectedItem().toString()))) {
-
+                    
                     JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
-                } else {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");}
+                    selecionarTabelaBotaoActionPerformed(evt);
+                    
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "Erro ao excluir contato");
+                    selecionarTabelaBotaoActionPerformed(evt);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if(excluirTipoContatoCombo.getSelectedItem().toString().equals("Funcionário") || excluirTipoContatoCombo.getSelectedItem().toString().equals("Administrador")){
+        } else if (excluirTipoContatoCombo.getSelectedItem().toString().equals("Funcionário") || excluirTipoContatoCombo.getSelectedItem().toString().equals("Administrador")) {
             try {
-                Funcionario funcionario = new Funcionario (excluirContatoCombo.getSelectedItem().toString());
+                Funcionario funcionario = new Funcionario(excluirContatoCombo.getSelectedItem().toString());
                 FuncionarioDAO fdao = new FuncionarioDAO();
-
+                
                 if (fdao.deletFuncionario(getId(excluirContatoCombo.getSelectedItem().toString()))) {
-
+                    
                     JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
-                } else {JOptionPane.showMessageDialog(null, "Erro ao excluir contato");}
+                    selecionarTabelaBotaoActionPerformed(evt);
+                    
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "Erro ao excluir contato");
+                    selecionarTabelaBotaoActionPerformed(evt);
+                }
             } catch (SQLException ex) {
-                Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+                //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }            
         }
     }//GEN-LAST:event_excluirBotaoActionPerformed
-    
-    
-    private void excluirContatoComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirContatoComboActionPerformed
-    }//GEN-LAST:event_excluirContatoComboActionPerformed
-    
+        
     //SELECIONAR TIPO DE CONTATO PARA EXCLUIR
     private void selecionarExcluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarExcluirBotaoActionPerformed
-        
         try {
             buscarContatos(excluirContatoCombo);
         } catch (SQLException ex) {
@@ -867,7 +804,6 @@ public class ContatosADM extends javax.swing.JFrame {
 
     //BOTAO SELECIONAR TABELA
     private void selecionarTabelaBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarTabelaBotaoActionPerformed
-        
         DefaultTableModel defaultCliente = (DefaultTableModel) clienteTable.getModel();
         DefaultTableModel defaultFuncionario = (DefaultTableModel) funcionarioTable.getModel();
         DefaultTableModel defaultAdministrador = (DefaultTableModel) administradorTable.getModel();
@@ -876,11 +812,11 @@ public class ContatosADM extends javax.swing.JFrame {
             String sql = "SELECT * FROM cliente";
             PreparedStatement statement;
 
-            showTabelaCliente();
+            adegai.showTabela(clientePlane, clienteTable, quantidadeClientesField);
             
             defaultCliente.setRowCount(0);
-            showOffTabelaFuncionario();
-            showOffTabelaAdministrador();
+            adegai.showOffTabela(funcionarioPane, funcionarioTable, quantidadeFuncionarioField);
+            adegai.showOffTabela(administradorPane, administradorTable, quantidadeAdministradorField);
             
             try {
                 buscarQuantidadeCliente(quantidadeClientesField);
@@ -906,11 +842,11 @@ public class ContatosADM extends javax.swing.JFrame {
             String sql = "SELECT * FROM funcionario WHERE admin=0";
             PreparedStatement statement;
 
-            showTabelaFuncionario();
+            adegai.showTabela(funcionarioPane, funcionarioTable, quantidadeFuncionarioField);
             
             defaultFuncionario.setRowCount(0);
-            showOffTabelaCliente();
-            showOffTabelaAdministrador();
+            adegai.showOffTabela(clientePlane, clienteTable, quantidadeClientesField);
+            adegai.showOffTabela(administradorPane, administradorTable, quantidadeAdministradorField);
 
             try {
                 buscarQuantidadeFuncionario(quantidadeFuncionarioField);
@@ -936,11 +872,11 @@ public class ContatosADM extends javax.swing.JFrame {
             String sql = "SELECT * FROM funcionario WHERE admin=1";
             PreparedStatement statement;
             
-            showTabelaAdministrador();
+            adegai.showTabela(administradorPane, administradorTable, quantidadeAdministradorField);
             
             defaultAdministrador.setRowCount(0);
-            showOffTabelaCliente();
-            showOffTabelaFuncionario();
+            adegai.showOffTabela(clientePlane, clienteTable, quantidadeClientesField);
+            adegai.showOffTabela(funcionarioPane, funcionarioTable, quantidadeFuncionarioField);
 
             try {
                 buscarQuantidadeAdministrador(quantidadeAdministradorField);
@@ -965,7 +901,7 @@ public class ContatosADM extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_selecionarTabelaBotaoActionPerformed
     
-    
+    //MAIN DA TELA CONTATOS
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(() -> {
@@ -997,6 +933,7 @@ public class ContatosADM extends javax.swing.JFrame {
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JScrollPane funcionarioPane;
     private javax.swing.JTable funcionarioTable;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton limparBotao;
     private javax.swing.JTextField loginAdministrador;
