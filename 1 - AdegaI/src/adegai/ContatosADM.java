@@ -740,13 +740,6 @@ public class ContatosADM extends javax.swing.JFrame {
         }   
     }//GEN-LAST:event_cadastrarAdministradorBotaoActionPerformed
     
-    //TRANSFORMAR STRING EM ID
-    public int getId(String contato){
-        String[] dados = contato.split(" ");
-        
-        return Integer.parseInt(dados[0]);
-    }
-    
     //EXCLUIR CONTATO
     private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
         selecionarTabelaBotaoActionPerformed(evt);
@@ -759,7 +752,7 @@ public class ContatosADM extends javax.swing.JFrame {
                 Cliente cliente = new Cliente(excluirContatoCombo.getSelectedItem().toString());
                 ClienteDAO cdao = new ClienteDAO();
                 
-                if (cdao.deletCliente(getId(excluirContatoCombo.getSelectedItem().toString()))) {
+                if (cdao.deletCliente(adegai.getId(excluirContatoCombo.getSelectedItem().toString()))) {
                     
                     JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
                     selecionarTabelaBotaoActionPerformed(evt);
@@ -777,7 +770,7 @@ public class ContatosADM extends javax.swing.JFrame {
                 Funcionario funcionario = new Funcionario(excluirContatoCombo.getSelectedItem().toString());
                 FuncionarioDAO fdao = new FuncionarioDAO();
                 
-                if (fdao.deletFuncionario(getId(excluirContatoCombo.getSelectedItem().toString()))) {
+                if (fdao.deletFuncionario(adegai.getId(excluirContatoCombo.getSelectedItem().toString()))) {
                     
                     JOptionPane.showMessageDialog(null, "Contato Excluído com sucesso!");
                     selecionarTabelaBotaoActionPerformed(evt);

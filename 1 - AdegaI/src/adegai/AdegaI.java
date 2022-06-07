@@ -5,7 +5,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 
 public class AdegaI {
     
@@ -54,6 +53,20 @@ public class AdegaI {
     
     public void mensagemPopUp(String mensagem){
         JOptionPane.showMessageDialog(null, mensagem);
+    }
+    
+    //TRANSFORMAR STRING EM ID
+    public int getId(String contato){
+        String[] dados = contato.split(" ");
+        
+        return Integer.parseInt(dados[0]);
+    }
+    
+    //TRANSFORMAR STRING EM ID
+    public String getNome(String contato){
+        String[] dados = contato.split(" ");
+        
+        return dados[2];
     }
     
 }

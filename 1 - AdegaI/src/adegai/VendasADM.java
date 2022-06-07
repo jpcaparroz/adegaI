@@ -1,20 +1,34 @@
 package adegai;
 
-import bd.ConnectBd;
+import  dao.ClienteDAO;
+import dao.ProdutoDAO;
+import dao.VendaDAO;
+import dao.VendaProdutoDAO;
+import model.VendaProduto;
+import model.Venda;
+
 import java.sql.Connection;
 import java.awt.Cursor;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import model.SoNumeros;
+import java.util.Date;
 
 public class VendasADM extends javax.swing.JFrame {
     Connection connection;
+    AdegaI adegai = new AdegaI();
     
     public VendasADM() {
         initComponents();
+        
+        valorProduto.setDocument(new SoNumeros());
+        quantidadeProduto.setDocument(new SoNumeros());
         buscarClientes();
+        buscarProdutos();
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
@@ -24,7 +38,10 @@ public class VendasADM extends javax.swing.JFrame {
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
         
+        valorProduto.setDocument(new SoNumeros());
+        quantidadeProduto.setDocument(new SoNumeros());
         buscarClientes();
+        buscarProdutos();
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -48,12 +65,17 @@ public class VendasADM extends javax.swing.JFrame {
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
+        totalVenda = new javax.swing.JLabel();
+        vendaPane = new javax.swing.JScrollPane();
+        vendaTable = new javax.swing.JTable();
+        comboProdutos = new javax.swing.JComboBox<>();
         comboClientes = new javax.swing.JComboBox<>();
-        caixaCliente = new javax.swing.JLabel();
-        botaoFinalizar = new javax.swing.JButton();
+        quantidadeProduto = new javax.swing.JTextField();
+        valorProduto = new javax.swing.JTextField();
         botaoLimpar = new javax.swing.JButton();
-        vendasCaixa = new javax.swing.JLabel();
-        novaVendaCaixa = new javax.swing.JLabel();
+        botaoFinalizar = new javax.swing.JButton();
+        botaoInserir = new javax.swing.JButton();
+        caixas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,38 +167,116 @@ public class VendasADM extends javax.swing.JFrame {
         menuCima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuCima.png"))); // NOI18N
         jPanel1.add(menuCima, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        totalVenda.setBackground(new java.awt.Color(255, 255, 255));
+        totalVenda.setFont(new java.awt.Font("Jost", 1, 18)); // NOI18N
+        totalVenda.setForeground(new java.awt.Color(0, 153, 0));
+        totalVenda.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        totalVenda.setText("0,00");
+        jPanel1.add(totalVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 567, 140, 30));
+
+        vendaTable.setBackground(new java.awt.Color(255, 255, 255));
+        vendaTable.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
+        vendaTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cod Produto", "Produto", "Quantidade", "Valor", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        vendaPane.setViewportView(vendaTable);
+
+        jPanel1.add(vendaPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 207, 490, 310));
+
+        comboProdutos.setBackground(new java.awt.Color(255, 255, 255));
+        comboProdutos.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
+        comboProdutos.setForeground(new java.awt.Color(32, 32, 32));
+        comboProdutos.setBorder(null);
+        comboProdutos.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                comboProdutosPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        jPanel1.add(comboProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 454, 312, 23));
+
         comboClientes.setBackground(new java.awt.Color(255, 255, 255));
-        comboClientes.setFont(new java.awt.Font("Jost", 0, 12)); // NOI18N
-        comboClientes.setForeground(new java.awt.Color(0, 0, 0));
-        comboClientes.setToolTipText("");
+        comboClientes.setFont(new java.awt.Font("Jost", 2, 12)); // NOI18N
+        comboClientes.setForeground(new java.awt.Color(32, 32, 32));
         comboClientes.setBorder(null);
-        comboClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 267, 320, 17));
+        jPanel1.add(comboClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 264, 312, 23));
 
-        caixaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/clienteCaixa.png"))); // NOI18N
-        jPanel1.add(caixaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(181, 238, -1, -1));
+        quantidadeProduto.setBackground(new java.awt.Color(255, 255, 255));
+        quantidadeProduto.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        quantidadeProduto.setForeground(new java.awt.Color(32, 32, 32));
+        quantidadeProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        quantidadeProduto.setText("0");
+        quantidadeProduto.setBorder(null);
+        jPanel1.add(quantidadeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 515, 70, 22));
 
-        botaoFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
-        botaoFinalizar.setBorder(null);
-        botaoFinalizar.setContentAreaFilled(false);
-        botaoFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botaoFinalizar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
-        botaoFinalizar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizarPressed.png"))); // NOI18N
-        jPanel1.add(botaoFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(471, 636, -1, -1));
+        valorProduto.setBackground(new java.awt.Color(255, 255, 255));
+        valorProduto.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
+        valorProduto.setForeground(new java.awt.Color(32, 32, 32));
+        valorProduto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valorProduto.setText("0,00");
+        valorProduto.setBorder(null);
+        jPanel1.add(valorProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 572, 65, 22));
 
         botaoLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
         botaoLimpar.setBorder(null);
+        botaoLimpar.setBorderPainted(false);
         botaoLimpar.setContentAreaFilled(false);
         botaoLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botaoLimpar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimpar.png"))); // NOI18N
         botaoLimpar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoLimparPressed.png"))); // NOI18N
-        jPanel1.add(botaoLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 636, -1, -1));
+        botaoLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoLimparActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(782, 633, -1, -1));
 
-        vendasCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/caixaVendas.png"))); // NOI18N
-        jPanel1.add(vendasCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(715, 138, -1, -1));
+        botaoFinalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
+        botaoFinalizar.setBorder(null);
+        botaoFinalizar.setBorderPainted(false);
+        botaoFinalizar.setContentAreaFilled(false);
+        botaoFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoFinalizar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizar.png"))); // NOI18N
+        botaoFinalizar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoFinalizarPressed.png"))); // NOI18N
+        botaoFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoFinalizarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoFinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1043, 633, -1, -1));
 
-        novaVendaCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/novaVendaCaixa.png"))); // NOI18N
-        jPanel1.add(novaVendaCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
+        botaoInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoInserir.png"))); // NOI18N
+        botaoInserir.setBorder(null);
+        botaoInserir.setBorderPainted(false);
+        botaoInserir.setContentAreaFilled(false);
+        botaoInserir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botaoInserir.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoInserir.png"))); // NOI18N
+        botaoInserir.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/botaoInserirPressed.png"))); // NOI18N
+        botaoInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoInserirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoInserir, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 624, -1, -1));
+
+        caixas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/caixas.png"))); // NOI18N
+        jPanel1.add(caixas, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,6 +292,26 @@ public class VendasADM extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    //PROCURAR TODOS CLIENTES
+    public void buscarClientes(){
+        try {
+            ClienteDAO cdao = new ClienteDAO();
+            cdao.buscarClientes(comboClientes);
+        } catch (SQLException ex) {
+            Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //PROCURA TODOS PRODUTOS
+    public void buscarProdutos(){
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            pdao.buscarProdutos(comboProdutos);
+        } catch (SQLException ex) {
+            Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
@@ -221,30 +341,88 @@ public class VendasADM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
     
-    public void buscarClientes() {
-        try {
-            connection = ConnectBd.getConnection();
-            String sql = "SELECT * FROM cliente";
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            ResultSet result = statement.executeQuery();
-            
-            while (result.next()){
-            
-            String cliente = (result.getString(2));
-
-            comboClientes.addItem(cliente);
-            
-            }
-            connection.close();
+    //INSERIR PRODUTO NA VENDA
+    private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
+        DecimalFormat f = new DecimalFormat("#.##");
+        DefaultTableModel defaultVenda = (DefaultTableModel) vendaTable.getModel();
+        double valorTotal;
         
-        } catch (SQLException ex) {
-            Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        if(quantidadeProduto.getText().isEmpty() || quantidadeProduto.getText().isBlank() || quantidadeProduto.getText().equals("0")){
+           adegai.mensagemPopUp("Erro"); 
+        } else {
+            
+            String id_produto = Integer.toString(adegai.getId(comboProdutos.getSelectedItem().toString()));
+            String produto = adegai.getNome(comboProdutos.getSelectedItem().toString());
+            String quantidade = quantidadeProduto.getText();
+            String valor = valorProduto.getText().replaceAll(",", ".");
+            String total = f.format(Double.parseDouble(valor) * Double.parseDouble(quantidade)).replaceAll(",", ".");
+            
+            String tabelaVenda[] = {id_produto, produto, quantidade, valor, total};
+            
+            defaultVenda.addRow(tabelaVenda);
+            
+            valorTotal = Double.parseDouble(total) + Double.parseDouble(totalVenda.getText().replaceAll(",", "."));
+            
+            totalVenda.setText(f.format(valorTotal));
         }
-    }
+        
+    }//GEN-LAST:event_botaoInserirActionPerformed
+    
+    //IMPRIME VALOR DO PRODUTO SELECIONADO
+    private void comboProdutosPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_comboProdutosPopupMenuWillBecomeInvisible
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            
+            valorProduto.setText(Double.toString(pdao.buscarValorProduto(adegai.getId(comboProdutos.getSelectedItem().toString())))); 
+            
+            pdao.close();
+        } catch (SQLException ex) {
+            
+           // Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_comboProdutosPopupMenuWillBecomeInvisible
+    
+    //LIMPA DADOS DA VENDA
+    private void botaoLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLimparActionPerformed
+        DefaultTableModel defaultVenda = (DefaultTableModel) vendaTable.getModel();
+        
+        defaultVenda.setRowCount(0);
+        
+        totalVenda.setText("0,00");
+    }//GEN-LAST:event_botaoLimparActionPerformed
+    
+    //FINALIZAR VENDA (INSERIR NO BANCO)
+    private void botaoFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoFinalizarActionPerformed
+        Date date = new Date();
+        SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd");
+        
+        String data = fdate.format(date);
+        double total = Double.parseDouble(totalVenda.getText().replaceAll(",", "."));
+        int id_cliente = adegai.getId(comboClientes.getSelectedItem().toString());
+        int id_funcionario = 1;
+        
+        try {
+            VendaDAO vdao = new VendaDAO();
+            Venda venda = new Venda(data, total, id_cliente, id_funcionario);
+                    
+            vdao.insertVenda(venda);
+            
+            VendaProdutoDAO vpdao = new VendaProdutoDAO();
+            VendaProduto vendaProduto = new VendaProduto(2, id_cliente, id_cliente);
+            
+            
+            adegai.mensagemPopUp("Venda feita!");
+        } catch (SQLException ex) {
+            
+            adegai.mensagemPopUp("Erro ao fazer a venda =(");
+            //Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }//GEN-LAST:event_botaoFinalizarActionPerformed
     
     public static void main(String args[]) {
-        
         java.awt.EventQueue.invokeLater(() -> {
             new VendasADM().setVisible(true);
         });
@@ -254,21 +432,26 @@ public class VendasADM extends javax.swing.JFrame {
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoFinalizar;
     private javax.swing.JButton botaoHome;
+    private javax.swing.JButton botaoInserir;
     private javax.swing.JButton botaoLimpar;
     private javax.swing.JButton botaoProdutos;
     private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
-    private javax.swing.JLabel caixaCliente;
+    private javax.swing.JLabel caixas;
     private javax.swing.JComboBox<String> comboClientes;
+    private javax.swing.JComboBox<String> comboProdutos;
     private javax.swing.JLabel funcionarioFunction;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
-    private javax.swing.JLabel novaVendaCaixa;
+    private javax.swing.JTextField quantidadeProduto;
+    private javax.swing.JLabel totalVenda;
     private javax.swing.JLabel userIcon;
+    private javax.swing.JTextField valorProduto;
+    private javax.swing.JScrollPane vendaPane;
+    private javax.swing.JTable vendaTable;
     private javax.swing.JLabel vendasBanner;
-    private javax.swing.JLabel vendasCaixa;
     // End of variables declaration//GEN-END:variables
 }
