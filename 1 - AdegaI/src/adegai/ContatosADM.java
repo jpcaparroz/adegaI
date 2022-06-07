@@ -662,8 +662,7 @@ public class ContatosADM extends javax.swing.JFrame {
     
     //SELECIONAR TIPO DE CADASTRADO
     private void selecionarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecionarBotaoActionPerformed
-        
-        if(comboContato.getSelectedItem().toString().equals("Administrador")){
+       if(comboContato.getSelectedItem().toString().equals("Administrador")){
             show(novoAdministradorCaixa, nomeAdministrador, loginAdministrador, senhaAdministrador, cadastrarAdministradorBotao);
             
             showOff(novoFuncionarioCaixa, nomeFuncionario, loginFuncionario, senhaFuncionario, cadastrarFuncionarioBotao);

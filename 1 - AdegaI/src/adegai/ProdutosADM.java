@@ -1,5 +1,6 @@
 package adegai;
 
+//IMPORTS
 import bd.ConnectBd;
 import dao.ProdutoDAO;
 import model.Produto;
@@ -331,7 +332,15 @@ public class ProdutosADM extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nome", "Valor", "Quantidade", "Tipo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         produtoTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
         produtoPlane.setViewportView(produtoTable);
 
@@ -372,28 +381,24 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
-        
         new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
 
     //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
-        
         new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
     //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
-        
         new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
     
     //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
-        
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
@@ -401,10 +406,10 @@ public class ProdutosADM extends javax.swing.JFrame {
     //EXCLUI PRODUTO
     private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
         try {
-            Produto produto = new Produto(excluirPordutosCombo.getSelectedItem().toString());
+            Produto produto = new Produto(adegai.getId(excluirPordutosCombo.getSelectedItem().toString()));
             ProdutoDAO pdao = new ProdutoDAO();
             
-            if (pdao.deletProduto(produto.getNome())) {
+            if (pdao.deletProduto(produto)) {
                 
                 adegai.mensagemPopUp("Produto Excluído com sucesso!");
                 atualizarBotaoActionPerformed(evt);
@@ -419,16 +424,17 @@ public class ProdutosADM extends javax.swing.JFrame {
     //LANÇA NO ESTOQUE
     private void lancarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lancarBotaoActionPerformed
         if(quantidadeEstoque.getText().isEmpty() || quantidadeEstoque.getText().isBlank()) {
+            adegai.mensagemPopUp("Erro, quantidade inválida");     
             
-            adegai.mensagemPopUp("Erro!");      
         } else try {
-            Produto produto = new Produto(Integer.valueOf(quantidadeEstoque.getText()), controleEstoqueCombo.getSelectedItem().toString());
+            Produto produto = new Produto(Integer.valueOf(quantidadeEstoque.getText()), adegai.getId(controleEstoqueCombo.getSelectedItem().toString()));
             ProdutoDAO pdao = new ProdutoDAO();
             
             if (tipoEstoqueCombo.getSelectedItem().toString().equals("Balanço")) {
                 
                 pdao.balancoQuantidadeProduto(produto);
                 adegai.mensagemPopUp("Balanço realizado com sucesso!!!");
+                System.out.println(adegai.getNome(controleEstoqueCombo.getSelectedItem().toString()));
                 
                 atualizarBotaoActionPerformed(evt);
             } else if (tipoEstoqueCombo.getSelectedItem().toString().equals("Entrada")) {
@@ -451,7 +457,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         } catch (SQLException ex) {
             
             atualizarBotaoActionPerformed(evt);
-            adegai.mensagemPopUp("Erro");
+            adegai.mensagemPopUp("Erro ao lançar estoque =(");
             //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lancarBotaoActionPerformed
