@@ -31,7 +31,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
-    public ProdutosADM(String funcionario, String funcao){
+    public ProdutosADM(String funcionario, String funcao, String id){
         initComponents();
         
         quantidadeEstoque.setDocument(new SoNumeros());
@@ -42,6 +42,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+        funcionarioId.setText(id);
                 
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -66,6 +67,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        funcionarioId = new javax.swing.JLabel();
         produtosBanner = new javax.swing.JLabel();
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
@@ -101,6 +103,12 @@ public class ProdutosADM extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        funcionarioId.setFont(new java.awt.Font("Jost", 1, 30)); // NOI18N
+        funcionarioId.setForeground(new java.awt.Color(255, 255, 255));
+        funcionarioId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        funcionarioId.setText("0");
+        jPanel1.add(funcionarioId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 35, 65, -1));
 
         produtosBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ProdutosADM/produtos.png"))); // NOI18N
         jPanel1.add(produtosBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 14, -1, -1));
@@ -381,25 +389,25 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
-        new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
 
     //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
-        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
     //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
-        new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Vendas(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
     
     //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
-        new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
     
@@ -542,6 +550,7 @@ public class ProdutosADM extends javax.swing.JFrame {
     private javax.swing.JButton excluirBotao;
     private javax.swing.JComboBox<String> excluirPordutosCombo;
     private javax.swing.JLabel funcionarioFunction;
+    private javax.swing.JLabel funcionarioId;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton lancarBotao;
