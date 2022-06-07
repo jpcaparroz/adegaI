@@ -46,8 +46,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
         relatoriosBanner = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
-        botaoProdutos = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
+        botaoProdutos = new javax.swing.JButton();
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
@@ -121,19 +121,6 @@ public class RelatoriosADM extends javax.swing.JFrame {
         });
         jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
-        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
-        botaoProdutos.setBorder(null);
-        botaoProdutos.setBorderPainted(false);
-        botaoProdutos.setContentAreaFilled(false);
-        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
-        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
-        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoProdutosActionPerformed(evt);
-            }
-        });
-        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
-
         botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIcon.png"))); // NOI18N
         botaoContatos.setBorder(null);
         botaoContatos.setBorderPainted(false);
@@ -145,7 +132,20 @@ public class RelatoriosADM extends javax.swing.JFrame {
                 botaoContatosActionPerformed(evt);
             }
         });
-        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
+        botaoProdutos.setBorder(null);
+        botaoProdutos.setBorderPainted(false);
+        botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoProdutosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
         botaoRelatorios.setBorder(null);

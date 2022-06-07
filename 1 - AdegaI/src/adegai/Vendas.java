@@ -39,10 +39,17 @@ public class Vendas extends javax.swing.JFrame {
         funcionarioFunction.setText(funcao);
         funcionarioId.setText(id);
         
+        if (funcionarioFunction.getText().equals("Padrão")){
+            botaoRelatorios.show(false);
+            botaoProdutos.show(false);         
+        }
+        
         valorProduto.setDocument(new SoNumeros());
         quantidadeProduto.setDocument(new SoNumeros());
+        
         buscarClientes();
         buscarProdutos();
+        
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -62,8 +69,8 @@ public class Vendas extends javax.swing.JFrame {
         vendasBanner = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
-        botaoProdutos = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
+        botaoProdutos = new javax.swing.JButton();
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
@@ -130,19 +137,6 @@ public class Vendas extends javax.swing.JFrame {
         botaoVendas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
         jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
-        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
-        botaoProdutos.setBorder(null);
-        botaoProdutos.setBorderPainted(false);
-        botaoProdutos.setContentAreaFilled(false);
-        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
-        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
-        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoProdutosActionPerformed(evt);
-            }
-        });
-        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
-
         botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIcon.png"))); // NOI18N
         botaoContatos.setBorder(null);
         botaoContatos.setBorderPainted(false);
@@ -154,7 +148,20 @@ public class Vendas extends javax.swing.JFrame {
                 botaoContatosActionPerformed(evt);
             }
         });
-        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
+        botaoProdutos.setBorder(null);
+        botaoProdutos.setBorderPainted(false);
+        botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoProdutosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIcon.png"))); // NOI18N
         botaoRelatorios.setBorder(null);
@@ -323,28 +330,29 @@ public class Vendas extends javax.swing.JFrame {
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
-        
         new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
     
     //DIRECIONA PARA A TELA PRODUTOS
     private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
-        
         new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoProdutosActionPerformed
 
     //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
-        
-        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
-        this.dispose();
+        if (funcionarioFunction.getText().equals("Padrão")) {
+            new Contatos(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+            this.dispose();
+        } else {
+            new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_botaoContatosActionPerformed
 
     //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
-        
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
@@ -407,7 +415,7 @@ public class Vendas extends javax.swing.JFrame {
         String data = fdate.format(date);
         double total = Double.parseDouble(totalVenda.getText().replaceAll(",", "."));
         int id_cliente = adegai.getId(comboClientes.getSelectedItem().toString());
-        int id_funcionario = 1;
+        int id_funcionario = Integer.parseInt(funcionarioId.getText());
         
         try {
             VendaDAO vdao = new VendaDAO();

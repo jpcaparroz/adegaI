@@ -6,7 +6,7 @@ public class Home extends javax.swing.JFrame {
 
     public Home() {
         initComponents();
-        
+
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -19,6 +19,11 @@ public class Home extends javax.swing.JFrame {
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
         funcionarioId.setText(id);
+        
+        if (funcionarioFunction.getText().equals("Padrão")){
+            botaoRelatorios.show(false);
+            botaoProdutos.show(false);         
+        }
         
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -38,8 +43,8 @@ public class Home extends javax.swing.JFrame {
         funcionarioFunction = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
-        botaoProdutos = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
+        botaoProdutos = new javax.swing.JButton();
         botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
@@ -90,18 +95,6 @@ public class Home extends javax.swing.JFrame {
         });
         jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
-        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
-        botaoProdutos.setBorder(null);
-        botaoProdutos.setBorderPainted(false);
-        botaoProdutos.setContentAreaFilled(false);
-        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
-        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoProdutosActionPerformed(evt);
-            }
-        });
-        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
-
         botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIcon.png"))); // NOI18N
         botaoContatos.setBorder(null);
         botaoContatos.setBorderPainted(false);
@@ -112,7 +105,19 @@ public class Home extends javax.swing.JFrame {
                 botaoContatosActionPerformed(evt);
             }
         });
-        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
+        botaoProdutos.setBorder(null);
+        botaoProdutos.setBorderPainted(false);
+        botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoProdutosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIcon.png"))); // NOI18N
         botaoRelatorios.setBorder(null);
@@ -151,21 +156,27 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
         new Vendas(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
-        this.dispose();
-        
-        
+        this.dispose();         
     }//GEN-LAST:event_botaoVendasActionPerformed
 
+    //DIRECIONA PARA A TELA PRODUTOS
     private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
         new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoProdutosActionPerformed
 
+    //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
-        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
-        this.dispose();
+        if (funcionarioFunction.getText().equals("Padrão")) {
+            new Contatos(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+            this.dispose();
+        } else {
+            new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_botaoContatosActionPerformed
 
+    //DIRECIONA PARA A TELA RELATORIOS
     private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
