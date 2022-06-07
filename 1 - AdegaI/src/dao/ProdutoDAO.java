@@ -20,6 +20,7 @@ public class ProdutoDAO {
     //BUSCA TODOS PRODUTOS
     public void buscarProdutos(JComboBox combo) throws SQLException{
         connection = ConnectBd.getConnection();
+        combo.removeAllItems();
         String sql = "SELECT * FROM produto";
         PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -62,10 +63,10 @@ public class ProdutoDAO {
     }
     
     //EXCLUI PRODUTO
-    public boolean deletProduto(String nome) throws SQLException {
-        String sql = "DELETE FROM produto WHERE nome=?";
+    public boolean deletProduto(Produto produto) throws SQLException {
+        String sql = "DELETE FROM produto WHERE id=?";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, nome);
+        statement.setInt(1, produto.getId());
 
         int rowsDeleted = statement.executeUpdate();
 
@@ -74,10 +75,10 @@ public class ProdutoDAO {
     
     //INSERE #BALANÇO QUANTIDADE PRODUTO
     public boolean balancoQuantidadeProduto (Produto produto) throws SQLException {
-        String sql = "UPDATE produto SET quantidade=? WHERE nome=?";
+        String sql = "UPDATE produto SET quantidade=? WHERE id=?";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, produto.getQuantidade());
-        statement.setString(2, produto.getNome());
+        statement.setInt(2, produto.getId());
 
         int rowsInserted = statement.executeUpdate();
 
@@ -86,10 +87,10 @@ public class ProdutoDAO {
     
     //RETORNA QUANTIDADE DO ESTOQUE DO PRODUTO
     public int quantidadeEstoqueProduto(Produto produto) throws SQLException {
-        String sql = "SELECT quantidade FROM produto WHERE nome =?";
+        String sql = "SELECT quantidade FROM produto WHERE id=?";
         
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, produto.getNome());
+        statement.setInt(1, produto.getId());
         
         ResultSet result = statement.executeQuery();
         result.next();
