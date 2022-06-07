@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JComboBox;
 
 public class ClienteDAO {
     
@@ -14,6 +15,21 @@ public class ClienteDAO {
     public ClienteDAO() throws SQLException{
 
         connection = ConnectBd.getConnection();
+    }
+    
+    //BUSCA CLIENTE
+    public void buscarClientes (JComboBox combo) throws SQLException {
+        String sql = "SELECT * FROM cliente";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet result = statement.executeQuery();
+            
+        while (result.next()){
+            
+        String cliente = (result.getInt(1) + " |Nome: " +result.getString(2));
+
+        combo.addItem(cliente);
+        }
     }
     
     //INSERE CLIENTE
@@ -25,6 +41,7 @@ public class ClienteDAO {
         int rowsInserted = statement.executeUpdate();
 
         return rowsInserted > 0;
+        
     }
     
     //VERIFICA CLIENTE

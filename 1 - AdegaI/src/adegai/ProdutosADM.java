@@ -11,9 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import model.SoNumeros;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,8 +26,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         quantidadeProduto.setDocument(new SoNumeros()); 
         valorProduto.setDocument(new SoNumeros());
         
-        buscarProdutos(excluirPordutosCombo);
-        buscarProdutos(controleEstoqueCombo);
+        buscarProdutos();
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
@@ -40,8 +37,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         quantidadeProduto.setDocument(new SoNumeros()); 
         valorProduto.setDocument(new SoNumeros());
         
-        buscarProdutos(excluirPordutosCombo);
-        buscarProdutos(controleEstoqueCombo);
+        buscarProdutos();
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
@@ -53,24 +49,12 @@ public class ProdutosADM extends javax.swing.JFrame {
     }
     
     //BUSCA TODOS PRODUTOS
-    public void buscarProdutos(JComboBox combo) {
-        combo.removeAllItems();
+    public void buscarProdutos() {
         try {
-            connection = ConnectBd.getConnection();
-            String sql = "SELECT * FROM produto";
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            ResultSet result = statement.executeQuery();
+            ProdutoDAO pdao = new ProdutoDAO();
             
-            while (result.next()){
-            
-            String produto = (result.getString(2));
-
-            combo.addItem(produto);
-            
-            }
-            connection.close();
-        
+            pdao.buscarProdutos(excluirPordutosCombo);
+            pdao.buscarProdutos(controleEstoqueCombo);
         } catch (SQLException ex) {
             Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -502,33 +486,32 @@ public class ProdutosADM extends javax.swing.JFrame {
     //ATUALIZA TABELA DE PRODUTOS
     private void atualizarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBotaoActionPerformed
         String sql = "SELECT * FROM produto";
-            PreparedStatement statement;
-            DefaultTableModel defaultProduto = (DefaultTableModel) produtoTable.getModel();
-            defaultProduto.setRowCount(0);
-            qntProduto(quantidadeProtudosField);
-            buscarProdutos(excluirPordutosCombo);
-            buscarProdutos(controleEstoqueCombo);
-            
-            try {
-                connection = ConnectBd.getConnection();
-                statement = connection.prepareStatement(sql);
-                ResultSet result = statement.executeQuery();
-                
-                while (result.next()) {
-                    String id = String.valueOf(result.getInt(1));
-                    String nome = result.getString(2);
-                    String valor = Double.toString(result.getDouble(3));
-                    String quantidade = Integer.toString(result.getInt(4));
-                    String tipo = result.getString(5);
+        PreparedStatement statement;
+        DefaultTableModel defaultProduto = (DefaultTableModel) produtoTable.getModel();
+        defaultProduto.setRowCount(0);
+        qntProduto(quantidadeProtudosField);
+        buscarProdutos();
 
-                    String tabelaProduto[] = {id, nome, valor, quantidade, tipo};
+        try {
+            connection = ConnectBd.getConnection();
+            statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
 
-                    defaultProduto.addRow(tabelaProduto);
-                }
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            while (result.next()) {
+                String id = String.valueOf(result.getInt(1));
+                String nome = result.getString(2);
+                String valor = Double.toString(result.getDouble(3));
+                String quantidade = Integer.toString(result.getInt(4));
+                String tipo = result.getString(5);
+
+                String tabelaProduto[] = {id, nome, valor, quantidade, tipo};
+
+                defaultProduto.addRow(tabelaProduto);
             }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_atualizarBotaoActionPerformed
     
     //MAIN

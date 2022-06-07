@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JComboBox;
 
 public class ProdutoDAO {
     
@@ -16,6 +17,36 @@ public class ProdutoDAO {
         connection = ConnectBd.getConnection();
     }
     
+    //BUSCA TODOS PRODUTOS
+    public void buscarProdutos(JComboBox combo) throws SQLException{
+        connection = ConnectBd.getConnection();
+        String sql = "SELECT * FROM produto";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet result = statement.executeQuery();
+            
+        while (result.next()){
+            
+        String produto = (result.getInt(1) + " |Produto: " + result.getString(2));
+
+        combo.addItem(produto);
+            
+        }
+    }
+    
+    //RETORNA VALOR DO PRODUTO
+        public double buscarValorProduto(int id) throws SQLException{
+        connection = ConnectBd.getConnection();
+        String sql = "SELECT * FROM produto WHERE id=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        
+        return result.getDouble(3);
+    }
+        
     //INSERE PRODUTO
     public boolean insertProduto (Produto produto) throws SQLException {
         String sql = "INSERT INTO produto (nome, valor, quantidade, tipo) values (?, ?, ?, ?)";
