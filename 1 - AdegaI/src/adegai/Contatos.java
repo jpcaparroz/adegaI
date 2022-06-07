@@ -17,11 +17,12 @@ public class Contatos extends javax.swing.JFrame {
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
-    public Contatos(String funcionario, String funcao) {
+    public Contatos(String funcionario, String funcao, String id) {
         initComponents();
 
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+        funcionarioId.setText(id);
                 
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -33,6 +34,7 @@ public class Contatos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        funcionarioId = new javax.swing.JLabel();
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
@@ -56,6 +58,12 @@ public class Contatos extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/ContatosADM/contatos.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(994, 14, -1, -1));
+
+        funcionarioId.setFont(new java.awt.Font("Jost", 1, 30)); // NOI18N
+        funcionarioId.setForeground(new java.awt.Color(255, 255, 255));
+        funcionarioId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        funcionarioId.setText("0");
+        jPanel1.add(funcionarioId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 35, 65, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
         jPanel1.add(logoIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -166,13 +174,13 @@ public class Contatos extends javax.swing.JFrame {
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
-        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
     
     //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
-        new Vendas(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Vendas(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
  
@@ -211,6 +219,7 @@ public class Contatos extends javax.swing.JFrame {
     private javax.swing.JButton botaoVendas;
     private javax.swing.JButton cadastrarClienteBotao;
     private javax.swing.JLabel funcionarioFunction;
+    private javax.swing.JLabel funcionarioId;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

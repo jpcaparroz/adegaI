@@ -12,6 +12,7 @@ public class TelaLogin extends javax.swing.JFrame {
     
     String nome;
     String funcao;
+    String id;
     
     public TelaLogin() throws SQLException {
         initComponents();
@@ -26,6 +27,10 @@ public class TelaLogin extends javax.swing.JFrame {
     
     public String getFuncao(){
         return funcao;
+    }
+    
+    public String getId(){
+        return id;
     }
     
     @SuppressWarnings("unchecked")
@@ -139,16 +144,17 @@ public class TelaLogin extends javax.swing.JFrame {
             
             if (dao.verifyFuncionarioLogin(login.getText(), pass) == true && dao.verifyFuncionarioAdm(login.getText(), pass) == false) {
                 
-                //SET DO NOME/FUNCAO DO USUARIO
+                //SET DO NOME/FUNCAO DO USUARIO/ID DO USUARIO
                 nome = dao.verifyFuncionario(login.getText(), pass).getNome();
+                id = Integer.toString(dao.verifyFuncionario(login.getText(), pass).getId());
                 
                 if(dao.verifyFuncionario(login.getText(), pass).isAdmin() == true){
                     funcao = "Administrador";
                 } else {funcao = "Padrão";}
                 
                 
-                HomeADM homeADM = new HomeADM(nome, funcao);
-                homeADM.setVisible(true);
+                Home home = new Home(nome, funcao, id);
+                home.setVisible(true);
                 this.dispose();
                 dao.close();
                 
@@ -156,13 +162,13 @@ public class TelaLogin extends javax.swing.JFrame {
                 
                 //SET DO NOME/FUNCAO DO USUARIO
                 nome = dao.verifyFuncionario(login.getText(), pass).getNome();
+                id = Integer.toString(dao.verifyFuncionario(login.getText(), pass).getId());
                 
                 if(dao.verifyFuncionario(login.getText(), pass).isAdmin() == true){
                     funcao = "Administrador";
                 } else {funcao = "Padrão";}
                 
-                HomeADM homeADM = new HomeADM();
-                homeADM.setFuncionario(nome, funcao);
+                Home homeADM = new Home(nome, funcao, id);
                 homeADM.setVisible(true);
                 this.dispose();
                 dao.close();

@@ -32,18 +32,21 @@ public class Vendas extends javax.swing.JFrame {
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
-    public Vendas(String funcionario, String funcao){
+    public Vendas(String funcionario, String funcao, String id){
         initComponents();
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
+        funcionarioId.setText(id);
         
         valorProduto.setDocument(new SoNumeros());
         quantidadeProduto.setDocument(new SoNumeros());
         buscarClientes();
         buscarProdutos();
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        botaoRelatorios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @SuppressWarnings("unchecked")
@@ -51,6 +54,7 @@ public class Vendas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        funcionarioId = new javax.swing.JLabel();
         logoIcon = new javax.swing.JLabel();
         userIcon = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
@@ -58,7 +62,9 @@ public class Vendas extends javax.swing.JFrame {
         vendasBanner = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
+        botaoProdutos = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
+        botaoRelatorios = new javax.swing.JButton();
         menuLateral = new javax.swing.JLabel();
         menuCima = new javax.swing.JLabel();
         totalVenda = new javax.swing.JLabel();
@@ -77,6 +83,12 @@ public class Vendas extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        funcionarioId.setFont(new java.awt.Font("Jost", 1, 30)); // NOI18N
+        funcionarioId.setForeground(new java.awt.Color(255, 255, 255));
+        funcionarioId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        funcionarioId.setText("0");
+        jPanel1.add(funcionarioId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 35, 65, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
         jPanel1.add(logoIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -116,7 +128,20 @@ public class Vendas extends javax.swing.JFrame {
         botaoVendas.setContentAreaFilled(false);
         botaoVendas.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
         botaoVendas.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/vendaIconPressed.png"))); // NOI18N
-        jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
+        jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
+
+        botaoProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIcon.png"))); // NOI18N
+        botaoProdutos.setBorder(null);
+        botaoProdutos.setBorderPainted(false);
+        botaoProdutos.setContentAreaFilled(false);
+        botaoProdutos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/productIconPressed.png"))); // NOI18N
+        botaoProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoProdutosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
         botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIcon.png"))); // NOI18N
         botaoContatos.setBorder(null);
@@ -129,7 +154,20 @@ public class Vendas extends javax.swing.JFrame {
                 botaoContatosActionPerformed(evt);
             }
         });
-        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, -1, -1));
+        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+
+        botaoRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIcon.png"))); // NOI18N
+        botaoRelatorios.setBorder(null);
+        botaoRelatorios.setBorderPainted(false);
+        botaoRelatorios.setContentAreaFilled(false);
+        botaoRelatorios.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
+        botaoRelatorios.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/relatorioIconPressed.png"))); // NOI18N
+        botaoRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRelatoriosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(botaoRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, -1, -1));
 
         menuLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuLateral.png"))); // NOI18N
         jPanel1.add(menuLateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -286,18 +324,31 @@ public class Vendas extends javax.swing.JFrame {
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
         
-        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
     
+    //DIRECIONA PARA A TELA PRODUTOS
+    private void botaoProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoProdutosActionPerformed
+        
+        new ProdutosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoProdutosActionPerformed
+
     //DIRECIONA PARA A TELA CONTATOS
     private void botaoContatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContatosActionPerformed
         
-        new Contatos(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new ContatosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoContatosActionPerformed
 
-   
+    //DIRECIONA PARA A TELA RELATORIOS
+    private void botaoRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatoriosActionPerformed
+        
+        new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botaoRelatoriosActionPerformed
+    
     //INSERIR PRODUTO NA VENDA
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
         DecimalFormat f = new DecimalFormat("#.##");
@@ -335,7 +386,7 @@ public class Vendas extends javax.swing.JFrame {
             pdao.close();
         } catch (SQLException ex) {
             
-           // Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_comboProdutosPopupMenuWillBecomeInvisible
     
@@ -372,7 +423,7 @@ public class Vendas extends javax.swing.JFrame {
         } catch (SQLException ex) {
             
             adegai.mensagemPopUp("Erro ao fazer a venda =(");
-            //Logger.getLogger(VendasADM.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -391,11 +442,14 @@ public class Vendas extends javax.swing.JFrame {
     private javax.swing.JButton botaoHome;
     private javax.swing.JButton botaoInserir;
     private javax.swing.JButton botaoLimpar;
+    private javax.swing.JButton botaoProdutos;
+    private javax.swing.JButton botaoRelatorios;
     private javax.swing.JButton botaoVendas;
     private javax.swing.JLabel caixas;
     private javax.swing.JComboBox<String> comboClientes;
     private javax.swing.JComboBox<String> comboProdutos;
     private javax.swing.JLabel funcionarioFunction;
+    private javax.swing.JLabel funcionarioId;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
