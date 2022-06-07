@@ -97,7 +97,7 @@ public class Contatos extends javax.swing.JFrame {
                 botaoVendasActionPerformed(evt);
             }
         });
-        jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
+        jPanel1.add(botaoVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
 
         botaoContatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         botaoContatos.setBorder(null);
@@ -105,7 +105,7 @@ public class Contatos extends javax.swing.JFrame {
         botaoContatos.setContentAreaFilled(false);
         botaoContatos.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
         botaoContatos.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/contatosIconPressed.png"))); // NOI18N
-        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+        jPanel1.add(botaoContatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, -1, -1));
 
         menuLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/menuLateral.png"))); // NOI18N
         jPanel1.add(menuLateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -166,13 +166,13 @@ public class Contatos extends javax.swing.JFrame {
     
     //DIRECIONA PARA A TELA HOME
     private void botaoHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoHomeActionPerformed
-        new HomeADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Home(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoHomeActionPerformed
     
     //DIRECIONA PARA A TELA VENDAS
     private void botaoVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVendasActionPerformed
-        new VendasADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
+        new Vendas(this.funcionarioNome.getText(), this.funcionarioFunction.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoVendasActionPerformed
  
