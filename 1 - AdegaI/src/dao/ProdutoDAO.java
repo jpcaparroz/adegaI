@@ -25,11 +25,11 @@ public class ProdutoDAO {
         PreparedStatement statement = connection.prepareStatement(sql);
 
         ResultSet result = statement.executeQuery();
-            
+        combo.addItem("");    
         while (result.next()){
             
         String produto = (result.getInt(1) + " |Produto: " + result.getString(2));
-
+        
         combo.addItem(produto);
             
         }
