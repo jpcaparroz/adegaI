@@ -47,7 +47,7 @@ public class Vendas extends javax.swing.JFrame {
         
         valorProduto.setDocument(new SoNumeros());
         quantidadeProduto.setDocument(new SoNumeros());
-        
+
         buscarClientes();
         buscarProdutos();
         
@@ -86,8 +86,10 @@ public class Vendas extends javax.swing.JFrame {
         botaoFinalizar = new javax.swing.JButton();
         botaoInserir = new javax.swing.JButton();
         caixas = new javax.swing.JLabel();
+        bgVendas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -295,6 +297,9 @@ public class Vendas extends javax.swing.JFrame {
         caixas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/caixas.png"))); // NOI18N
         jPanel1.add(caixas, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 138, -1, -1));
 
+        bgVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/VendasADM/bg.png"))); // NOI18N
+        jPanel1.add(bgVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -312,6 +317,7 @@ public class Vendas extends javax.swing.JFrame {
     
     //PROCURAR TODOS CLIENTES
     public void buscarClientes(){
+        comboClientes.addItem("");
         try {
             ClienteDAO cdao = new ClienteDAO();
             cdao.buscarClientes(comboClientes);
@@ -325,6 +331,7 @@ public class Vendas extends javax.swing.JFrame {
         try {
             ProdutoDAO pdao = new ProdutoDAO();
             pdao.buscarProdutos(comboProdutos);
+            
         } catch (SQLException ex) {
             Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -401,10 +408,13 @@ public class Vendas extends javax.swing.JFrame {
     private void comboProdutosPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_comboProdutosPopupMenuWillBecomeInvisible
         try {
             ProdutoDAO pdao = new ProdutoDAO();
-            
+            if (comboProdutos.getSelectedItem().toString().isBlank() || comboProdutos.getSelectedItem().toString().isEmpty()){
+                
+            } else {
             valorProduto.setText(Double.toString(pdao.buscarValorProduto(adegai.getId(comboProdutos.getSelectedItem().toString())))); 
             
             pdao.close();
+            }
         } catch (SQLException ex) {
             
            // Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
@@ -477,6 +487,7 @@ public class Vendas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgVendas;
     private javax.swing.JButton botaoContatos;
     private javax.swing.JButton botaoFinalizar;
     private javax.swing.JButton botaoHome;
