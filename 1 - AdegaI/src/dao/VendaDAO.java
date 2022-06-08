@@ -2,9 +2,11 @@ package dao;
 
 import bd.ConnectBd;
 import model.Venda;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 
 public class VendaDAO {
@@ -28,6 +30,17 @@ public class VendaDAO {
         int rowsInserted = statement.executeUpdate();
 
         return rowsInserted > 0;
+    }
+    
+    public int ultimaVenda() throws SQLException {
+        String sql = "SELECT id FROM venda ORDER BY  id DESC LIMIT 1";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        ResultSet result = statement.executeQuery();
+        
+        result.next();
+        
+        return result.getInt(1);
     }
 
     public void close() throws SQLException{

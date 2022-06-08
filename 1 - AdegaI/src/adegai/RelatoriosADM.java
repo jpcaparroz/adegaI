@@ -17,6 +17,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
     
     public RelatoriosADM() {
         initComponents();
+        
+        ordemAlfabeticaBotao.show(false);
     }
     
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
@@ -27,6 +29,7 @@ public class RelatoriosADM extends javax.swing.JFrame {
         funcionarioFunction.setText(funcao);
         funcionarioId.setText(id);
         
+        ordemAlfabeticaBotao.show(false);
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -169,26 +172,43 @@ public class RelatoriosADM extends javax.swing.JFrame {
         jPanel1.add(tipoRelatorioCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 209, 370, 40));
 
         dataFinal.setText("00/00/0000");
-        jPanel1.add(dataFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 260, -1, -1));
+        dataFinal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dataFinalActionPerformed(evt);
+            }
+        });
+        jPanel1.add(dataFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 270, -1, -1));
 
         dataInicio.setText("00/00/0000");
-        jPanel1.add(dataInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 260, -1, -1));
+        jPanel1.add(dataInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 270, -1, -1));
 
-        gerarRelatorioBotao.setText("Gerar");
+        gerarRelatorioBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoGerar.png"))); // NOI18N
+        gerarRelatorioBotao.setBorder(null);
+        gerarRelatorioBotao.setBorderPainted(false);
+        gerarRelatorioBotao.setContentAreaFilled(false);
+        gerarRelatorioBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gerarRelatorioBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoGerar.png"))); // NOI18N
+        gerarRelatorioBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoGerarPressed.png"))); // NOI18N
         gerarRelatorioBotao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gerarRelatorioBotaoActionPerformed(evt);
             }
         });
-        jPanel1.add(gerarRelatorioBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 170, -1, -1));
+        jPanel1.add(gerarRelatorioBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 214, -1, -1));
 
-        ordemAlfabeticaBotao.setText("Ordem Alfabética");
+        ordemAlfabeticaBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoAz.png"))); // NOI18N
+        ordemAlfabeticaBotao.setBorder(null);
+        ordemAlfabeticaBotao.setBorderPainted(false);
+        ordemAlfabeticaBotao.setContentAreaFilled(false);
+        ordemAlfabeticaBotao.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ordemAlfabeticaBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoAz.png"))); // NOI18N
+        ordemAlfabeticaBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoAzPressed.png"))); // NOI18N
         ordemAlfabeticaBotao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ordemAlfabeticaBotaoActionPerformed(evt);
             }
         });
-        jPanel1.add(ordemAlfabeticaBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 230, -1, -1));
+        jPanel1.add(ordemAlfabeticaBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(679, 262, -1, -1));
 
         todosClientesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -290,7 +310,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
         DefaultTableModel defaultVendas = (DefaultTableModel) todasVendasTable.getModel();
 
         if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todas Vendas")) {
-
+            
+            ordemAlfabeticaBotao.show(false);
             adegai.showTabela(todasVendasPane, todasVendasTable);
 
             adegai.showOffTabela(todosClientesPane, todosClientesTable);
@@ -321,7 +342,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
             }
 
         } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todos Clientes")) {
-
+            
+            ordemAlfabeticaBotao.show(true);
             adegai.showOffTabela(vendaPeriodoPane, vendaPeriodoTable);
             adegai.showOffTabela(todasVendasPane, todasVendasTable);
 
@@ -352,6 +374,7 @@ public class RelatoriosADM extends javax.swing.JFrame {
                 //Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            
 
         }
     }//GEN-LAST:event_gerarRelatorioBotaoActionPerformed
@@ -396,6 +419,10 @@ public class RelatoriosADM extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_ordemAlfabeticaBotaoActionPerformed
+
+    private void dataFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFinalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dataFinalActionPerformed
     
     public static void main(String args[]) {
         

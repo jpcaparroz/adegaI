@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import model.SoNumeros;
 import java.util.Date;
+import model.Produto;
 
 public class Vendas extends javax.swing.JFrame {
     Connection connection;
@@ -24,7 +25,7 @@ public class Vendas extends javax.swing.JFrame {
     
     public Vendas() {
         initComponents();
-        
+
         valorProduto.setDocument(new SoNumeros());
         quantidadeProduto.setDocument(new SoNumeros());
         buscarClientes();
@@ -34,7 +35,7 @@ public class Vendas extends javax.swing.JFrame {
     //CONSTRUTOR PEGANDO NOME/FUNÇÃO DO USUÁRIO
     public Vendas(String funcionario, String funcao, String id){
         initComponents();
-        
+
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
         funcionarioId.setText(id);
@@ -94,7 +95,7 @@ public class Vendas extends javax.swing.JFrame {
         funcionarioId.setFont(new java.awt.Font("Jost", 1, 30)); // NOI18N
         funcionarioId.setForeground(new java.awt.Color(255, 255, 255));
         funcionarioId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        funcionarioId.setText("0");
+        funcionarioId.setText("1");
         jPanel1.add(funcionarioId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 35, 65, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N
@@ -240,6 +241,7 @@ public class Vendas extends javax.swing.JFrame {
         quantidadeProduto.setBorder(null);
         jPanel1.add(quantidadeProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 515, 70, 22));
 
+        valorProduto.setEditable(false);
         valorProduto.setBackground(new java.awt.Color(255, 255, 255));
         valorProduto.setFont(new java.awt.Font("Jost", 1, 12)); // NOI18N
         valorProduto.setForeground(new java.awt.Color(32, 32, 32));
@@ -363,25 +365,36 @@ public class Vendas extends javax.swing.JFrame {
         DefaultTableModel defaultVenda = (DefaultTableModel) vendaTable.getModel();
         double valorTotal;
         
-        if(quantidadeProduto.getText().isEmpty() || quantidadeProduto.getText().isBlank() || quantidadeProduto.getText().equals("0")){
-           adegai.mensagemPopUp("Erro"); 
-        } else {
+        try {
+            ProdutoDAO pdao = new ProdutoDAO();
+            Produto prod = new Produto(adegai.getId(comboProdutos.getSelectedItem().toString()));
             
-            String id_produto = Integer.toString(adegai.getId(comboProdutos.getSelectedItem().toString()));
-            String produto = adegai.getNome(comboProdutos.getSelectedItem().toString());
-            String quantidade = quantidadeProduto.getText();
-            String valor = valorProduto.getText().replaceAll(",", ".");
-            String total = f.format(Double.parseDouble(valor) * Double.parseDouble(quantidade)).replaceAll(",", ".");
-            
-            String tabelaVenda[] = {id_produto, produto, quantidade, valor, total};
-            
-            defaultVenda.addRow(tabelaVenda);
-            
-            valorTotal = Double.parseDouble(total) + Double.parseDouble(totalVenda.getText().replaceAll(",", "."));
-            
-            totalVenda.setText(f.format(valorTotal));
+            if (quantidadeProduto.getText().isEmpty() || quantidadeProduto.getText().isBlank() || quantidadeProduto.getText().equals("0") || comboClientes.getSelectedItem().toString().isEmpty()) {
+                adegai.mensagemPopUp("Erro");
+                
+            } else if (Integer.parseInt(quantidadeProduto.getText()) > pdao.quantidadeEstoqueProduto(prod)) {
+                adegai.mensagemPopUp("Quantidade inválida");
+                
+            } else {
+                
+                String id_produto = Integer.toString(adegai.getId(comboProdutos.getSelectedItem().toString()));
+                String produto = adegai.getNome(comboProdutos.getSelectedItem().toString());
+                String quantidade = quantidadeProduto.getText();
+                String valor = valorProduto.getText().replaceAll(",", ".");
+                String total = f.format(Double.parseDouble(valor) * Double.parseDouble(quantidade)).replaceAll(",", ".");
+                
+                String tabelaVenda[] = {id_produto, produto, quantidade, valor, total};
+                
+                defaultVenda.addRow(tabelaVenda);
+                
+                valorTotal = Double.parseDouble(total) + Double.parseDouble(totalVenda.getText().replaceAll(",", "."));
+                
+                totalVenda.setText(f.format(valorTotal));
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_botaoInserirActionPerformed
     
     //IMPRIME VALOR DO PRODUTO SELECIONADO
@@ -424,18 +437,37 @@ public class Vendas extends javax.swing.JFrame {
             vdao.insertVenda(venda);
             
             VendaProdutoDAO vpdao = new VendaProdutoDAO();
-            VendaProduto vendaProduto = new VendaProduto(2, id_cliente, id_cliente);
+            ProdutoDAO pdao = new ProdutoDAO();
             
+            int idVenda = vdao.ultimaVenda();
+            
+            //FOR PARA RODAR A TABELA INTEIRA E LANÇAR A VENDA
+            for (int i = 0; i < vendaTable.getRowCount(); i++) {
+                
+                //PEGANDO VALORES DA TABELA DA VENDA
+                int idProd = Integer.parseInt(vendaTable.getValueAt(i, 0).toString());
+                int qntProd = Integer.parseInt(vendaTable.getValueAt(i, 2).toString());
+                
+                //INSERINDO NA TABELA *venda_produto* A VENDA FEITA PELO USUARIO
+                VendaProduto vendaProduto = new VendaProduto(idVenda, idProd ,qntProd);
+                vpdao.insertProdutoVenda(vendaProduto);
+                
+                //DANDO BAIXA NO ESTOQUE COM A SAIDA DA VENDA
+                Produto produto = new Produto(qntProd, idProd);
+                
+                int atual = pdao.quantidadeEstoqueProduto(produto);
+                produto.setQuantidade(atual - produto.getQuantidade());
+                
+                pdao.balancoQuantidadeProduto(produto);
+            }
             
             adegai.mensagemPopUp("Venda feita!");
+            botaoLimparActionPerformed(evt);
         } catch (SQLException ex) {
             
             adegai.mensagemPopUp("Erro ao fazer a venda =(");
             //Logger.getLogger(Vendas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
     }//GEN-LAST:event_botaoFinalizarActionPerformed
     
     public static void main(String args[]) {
