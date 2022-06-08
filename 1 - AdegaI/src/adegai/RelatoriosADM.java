@@ -6,18 +6,25 @@ import java.awt.Cursor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 
 public class RelatoriosADM extends javax.swing.JFrame {
     Connection connection;
     AdegaI adegai = new AdegaI();
     
+    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf2 = new  SimpleDateFormat ("dd-MM-yyyy");
+
     public RelatoriosADM() {
         initComponents();
         
+        dataFinal.show(false);
+        dataInicio.show(false);
         ordemAlfabeticaBotao.show(false);
     }
     
@@ -29,7 +36,10 @@ public class RelatoriosADM extends javax.swing.JFrame {
         funcionarioFunction.setText(funcao);
         funcionarioId.setText(id);
         
+        dataFinal.show(false);
+        dataInicio.show(false);
         ordemAlfabeticaBotao.show(false);
+        
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -169,6 +179,15 @@ public class RelatoriosADM extends javax.swing.JFrame {
         tipoRelatorioCombo.setForeground(new java.awt.Color(32, 32, 32));
         tipoRelatorioCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas Vendas", "Todos Clientes", "Venda por Periodo" }));
         tipoRelatorioCombo.setBorder(null);
+        tipoRelatorioCombo.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                tipoRelatorioComboPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
         jPanel1.add(tipoRelatorioCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 209, 370, 40));
 
         dataFinal.setText("00/00/0000");
@@ -311,6 +330,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
 
         if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todas Vendas")) {
             
+            dataFinal.show(false);
+            dataInicio.show(false);
             ordemAlfabeticaBotao.show(false);
             adegai.showTabela(todasVendasPane, todasVendasTable);
 
@@ -342,6 +363,9 @@ public class RelatoriosADM extends javax.swing.JFrame {
             }
 
         } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todos Clientes")) {
+            
+            dataFinal.show(false);
+            dataInicio.show(false);
             
             ordemAlfabeticaBotao.show(true);
             adegai.showOffTabela(vendaPeriodoPane, vendaPeriodoTable);
@@ -375,7 +399,47 @@ public class RelatoriosADM extends javax.swing.JFrame {
             }
         } else {
             
+            adegai.showTabela(vendaPeriodoPane, vendaPeriodoTable);
+            
+            adegai.showOffTabela(todasVendasPane, todasVendasTable);
+            adegai.showTabela(todosClientesPane, todosClientesTable);
+            
+            ordemAlfabeticaBotao.show(false);
 
+            try {
+
+            connection = ConnectBd.getConnection();    
+            String sql = "SELECT * FROM venda WHERE data BETWEEN (?) AND (?) ORDER BY data";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            String d1 = "05-06-2022";
+            String d2 = "07-06-2022";
+            statement.setString(1, sdf1.format(sdf2.parse(d1)));
+            statement.setString(2, sdf1.format(sdf2.parse(d2)));
+
+            defaultCliente.setRowCount(0);
+
+            
+                connection = ConnectBd.getConnection();
+                statement = connection.prepareStatement(sql);
+                ResultSet result = statement.executeQuery();
+
+                while (result.next()) {
+                    String id = String.valueOf(result.getInt(1));
+                    String nome = result.getString(2);
+
+                    String tabelaCliente[] = {id, nome};
+
+                    defaultCliente.addRow(tabelaCliente);
+                }
+                
+                connection.close();
+            } catch (SQLException ex) {
+                adegai.mensagemPopUp("Erro");
+                Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(RelatoriosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_gerarRelatorioBotaoActionPerformed
     
@@ -423,6 +487,11 @@ public class RelatoriosADM extends javax.swing.JFrame {
     private void dataFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFinalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dataFinalActionPerformed
+
+    private void tipoRelatorioComboPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tipoRelatorioComboPopupMenuWillBecomeInvisible
+        dataFinal.show(true);
+        dataInicio.show(true);
+    }//GEN-LAST:event_tipoRelatorioComboPopupMenuWillBecomeInvisible
     
     public static void main(String args[]) {
         
