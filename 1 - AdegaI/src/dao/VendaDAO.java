@@ -32,6 +32,7 @@ public class VendaDAO {
         return rowsInserted > 0;
     }
     
+    //RETORNA ID DA ULTIMA VENDA
     public int ultimaVenda() throws SQLException {
         String sql = "SELECT id FROM venda ORDER BY  id DESC LIMIT 1";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -41,6 +42,17 @@ public class VendaDAO {
         result.next();
         
         return result.getInt(1);
+    }
+    
+    //RETORNA QUANTIDADE DE VENDAS
+    public int quantidadeVendas() throws SQLException {
+        String sql = "SELECT COUNT(*) AS total FROM venda";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        ResultSet result = statement.executeQuery();
+        result.next();
+        int count = result.getInt("total");
+        return count;
     }
 
     public void close() throws SQLException{

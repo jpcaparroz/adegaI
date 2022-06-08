@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -17,14 +18,19 @@ public class RelatoriosADM extends javax.swing.JFrame {
     Connection connection;
     AdegaI adegai = new AdegaI();
     
-    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat sdf2 = new  SimpleDateFormat ("dd-MM-yyyy");
+    Date dataHoje = new Date();
+    
+    SimpleDateFormat fdata = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat fdatHoje = new SimpleDateFormat("dd-MM-yyyy");
 
     public RelatoriosADM() {
         initComponents();
         
         dataFinal.show(false);
         dataInicio.show(false);
+        hojeFinalBotao.show(false);        
+        hojeInicioBotao.show(false);
+        
         ordemAlfabeticaBotao.show(false);
     }
     
@@ -38,6 +44,9 @@ public class RelatoriosADM extends javax.swing.JFrame {
         
         dataFinal.show(false);
         dataInicio.show(false);
+        hojeFinalBotao.show(false);        
+        hojeInicioBotao.show(false);
+        
         ordemAlfabeticaBotao.show(false);
         
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -69,10 +78,12 @@ public class RelatoriosADM extends javax.swing.JFrame {
         dataInicio = new javax.swing.JTextField();
         gerarRelatorioBotao = new javax.swing.JButton();
         ordemAlfabeticaBotao = new javax.swing.JButton();
-        todosClientesPane = new javax.swing.JScrollPane();
-        todosClientesTable = new javax.swing.JTable();
+        hojeInicioBotao = new javax.swing.JButton();
+        hojeFinalBotao = new javax.swing.JButton();
         vendaPeriodoPane = new javax.swing.JScrollPane();
         vendaPeriodoTable = new javax.swing.JTable();
+        todosClientesPane = new javax.swing.JScrollPane();
+        todosClientesTable = new javax.swing.JTable();
         todasVendasPane = new javax.swing.JScrollPane();
         todasVendasTable = new javax.swing.JTable();
         relatoriosCaixa = new javax.swing.JLabel();
@@ -191,15 +202,10 @@ public class RelatoriosADM extends javax.swing.JFrame {
         jPanel1.add(tipoRelatorioCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 209, 370, 40));
 
         dataFinal.setText("00/00/0000");
-        dataFinal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataFinalActionPerformed(evt);
-            }
-        });
-        jPanel1.add(dataFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 270, -1, -1));
+        jPanel1.add(dataFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 265, -1, -1));
 
         dataInicio.setText("00/00/0000");
-        jPanel1.add(dataInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 270, -1, -1));
+        jPanel1.add(dataInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 265, -1, -1));
 
         gerarRelatorioBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoGerar.png"))); // NOI18N
         gerarRelatorioBotao.setBorder(null);
@@ -229,27 +235,35 @@ public class RelatoriosADM extends javax.swing.JFrame {
         });
         jPanel1.add(ordemAlfabeticaBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(679, 262, -1, -1));
 
-        todosClientesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "ID", "Nome"
+        hojeInicioBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHoje.png"))); // NOI18N
+        hojeInicioBotao.setBorder(null);
+        hojeInicioBotao.setBorderPainted(false);
+        hojeInicioBotao.setContentAreaFilled(false);
+        hojeInicioBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHoje.png"))); // NOI18N
+        hojeInicioBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHojePressed.png"))); // NOI18N
+        hojeInicioBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hojeInicioBotaoActionPerformed(evt);
             }
-        ));
-        todosClientesPane.setViewportView(todosClientesTable);
+        });
+        jPanel1.add(hojeInicioBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 270, -1, -1));
 
-        jPanel1.add(todosClientesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 303, 969, 348));
+        hojeFinalBotao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHoje.png"))); // NOI18N
+        hojeFinalBotao.setBorder(null);
+        hojeFinalBotao.setBorderPainted(false);
+        hojeFinalBotao.setContentAreaFilled(false);
+        hojeFinalBotao.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHoje.png"))); // NOI18N
+        hojeFinalBotao.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/RelatoriosADM/botaoHojePressed.png"))); // NOI18N
+        hojeFinalBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hojeFinalBotaoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(hojeFinalBotao, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 270, -1, -1));
 
         vendaPeriodoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Data", "Valor"
@@ -259,12 +273,21 @@ public class RelatoriosADM extends javax.swing.JFrame {
 
         jPanel1.add(vendaPeriodoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 303, 969, 348));
 
+        todosClientesTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome"
+            }
+        ));
+        todosClientesPane.setViewportView(todosClientesTable);
+
+        jPanel1.add(todosClientesPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(215, 303, 969, 348));
+
         todasVendasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Data", "Valor"
@@ -327,12 +350,11 @@ public class RelatoriosADM extends javax.swing.JFrame {
     private void gerarRelatorioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelatorioBotaoActionPerformed
         DefaultTableModel defaultCliente = (DefaultTableModel) todosClientesTable.getModel();
         DefaultTableModel defaultVendas = (DefaultTableModel) todasVendasTable.getModel();
+        DefaultTableModel defaultVendasPeriodo = (DefaultTableModel) vendaPeriodoTable.getModel();
 
         if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todas Vendas")) {
-            
-            dataFinal.show(false);
-            dataInicio.show(false);
-            ordemAlfabeticaBotao.show(false);
+            defaultVendas.setRowCount(0);
+
             adegai.showTabela(todasVendasPane, todasVendasTable);
 
             adegai.showOffTabela(todosClientesPane, todosClientesTable);
@@ -363,11 +385,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
             }
 
         } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todos Clientes")) {
-            
-            dataFinal.show(false);
-            dataInicio.show(false);
-            
-            ordemAlfabeticaBotao.show(true);
+            defaultCliente.setRowCount(0);
+
             adegai.showOffTabela(vendaPeriodoPane, vendaPeriodoTable);
             adegai.showOffTabela(todasVendasPane, todasVendasTable);
 
@@ -382,7 +401,7 @@ public class RelatoriosADM extends javax.swing.JFrame {
                 connection = ConnectBd.getConnection();
                 statement = connection.prepareStatement(sql);
                 ResultSet result = statement.executeQuery();
-
+                
                 while (result.next()) {
                     String id = String.valueOf(result.getInt(1));
                     String nome = result.getString(2);
@@ -391,48 +410,43 @@ public class RelatoriosADM extends javax.swing.JFrame {
 
                     defaultCliente.addRow(tabelaCliente);
                 }
-                
+
                 connection.close();
             } catch (SQLException ex) {
                 adegai.mensagemPopUp("Erro");
                 //Logger.getLogger(ContatosADM.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            defaultVendasPeriodo.setRowCount(0);
             
             adegai.showTabela(vendaPeriodoPane, vendaPeriodoTable);
-            
+
             adegai.showOffTabela(todasVendasPane, todasVendasTable);
             adegai.showTabela(todosClientesPane, todosClientesTable);
             
-            ordemAlfabeticaBotao.show(false);
-
-            try {
-
-            connection = ConnectBd.getConnection();    
-            String sql = "SELECT * FROM venda WHERE data BETWEEN (?) AND (?) ORDER BY data";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            
-            String d1 = "05-06-2022";
-            String d2 = "07-06-2022";
-            statement.setString(1, sdf1.format(sdf2.parse(d1)));
-            statement.setString(2, sdf1.format(sdf2.parse(d2)));
-
-            defaultCliente.setRowCount(0);
-
-            
+            try {       
+                Date dInicio = new SimpleDateFormat("dd-MM-yyyy").parse(dataInicio.getText().replaceAll("/", "-")); 
+                Date dFinal = new SimpleDateFormat("dd-MM-yyyy").parse(dataFinal.getText().replaceAll("/", "-"));
+                
                 connection = ConnectBd.getConnection();
-                statement = connection.prepareStatement(sql);
+                String sql = "SELECT * FROM venda WHERE data BETWEEN ? AND ? ORDER BY data";
+                
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1, fdata.format(dInicio).replaceAll("/", "-"));
+                statement.setString(2, fdata.format(dFinal).replaceAll("/", "-"));
+                
                 ResultSet result = statement.executeQuery();
 
                 while (result.next()) {
                     String id = String.valueOf(result.getInt(1));
-                    String nome = result.getString(2);
+                    String data_venda = String.valueOf(result.getDate(2));
+                    String valor = String.valueOf(result.getDouble(3));
 
-                    String tabelaCliente[] = {id, nome};
+                    String tabelaVendasPeriodo[] = {id, data_venda, valor};
 
-                    defaultCliente.addRow(tabelaCliente);
+                    defaultVendasPeriodo.addRow(tabelaVendasPeriodo);
                 }
-                
+
                 connection.close();
             } catch (SQLException ex) {
                 adegai.mensagemPopUp("Erro");
@@ -484,15 +498,45 @@ public class RelatoriosADM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ordemAlfabeticaBotaoActionPerformed
 
-    private void dataFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataFinalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dataFinalActionPerformed
-
     private void tipoRelatorioComboPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tipoRelatorioComboPopupMenuWillBecomeInvisible
-        dataFinal.show(true);
-        dataInicio.show(true);
+        if(tipoRelatorioCombo.getSelectedItem().toString().equals("Todos Clientes")){
+            
+            dataFinal.show(false);
+            dataInicio.show(false);
+            hojeFinalBotao.show(false);
+            hojeInicioBotao.show(false);
+            
+            ordemAlfabeticaBotao.show(true);
+            
+        } else if (tipoRelatorioCombo.getSelectedItem().toString().equals("Todas Vendas")) {
+            dataFinal.show(false);
+            dataInicio.show(false);
+            hojeFinalBotao.show(false);
+            hojeInicioBotao.show(false);
+            
+            ordemAlfabeticaBotao.show(false);
+        } else {
+            hojeFinalBotao.show(true);
+            hojeInicioBotao.show(true);
+            dataFinal.show(true);
+            dataInicio.show(true);
+            
+            ordemAlfabeticaBotao.show(false);
+        }
+        
     }//GEN-LAST:event_tipoRelatorioComboPopupMenuWillBecomeInvisible
+
+    //SETAR DATA ATUAL NA CAIXA "dataFinal"
+    private void hojeFinalBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hojeFinalBotaoActionPerformed
+        dataFinal.setText(fdatHoje.format(dataHoje).replaceAll("-", "/"));
+    }//GEN-LAST:event_hojeFinalBotaoActionPerformed
     
+    //SETAR DATA ATUAL NA CAIXA "dataInicio"
+    private void hojeInicioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hojeInicioBotaoActionPerformed
+        dataInicio.setText(fdatHoje.format(dataHoje).replaceAll("-", "/"));
+    }//GEN-LAST:event_hojeInicioBotaoActionPerformed
+    
+    //MAIN
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(() -> {
@@ -513,6 +557,8 @@ public class RelatoriosADM extends javax.swing.JFrame {
     private javax.swing.JLabel funcionarioId;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JButton gerarRelatorioBotao;
+    private javax.swing.JButton hojeFinalBotao;
+    private javax.swing.JButton hojeInicioBotao;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;

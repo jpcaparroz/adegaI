@@ -1,12 +1,26 @@
 package adegai;
 
+import dao.ClienteDAO;
+import dao.VendaDAO;
+
 import java.awt.Cursor;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 
 public class Home extends javax.swing.JFrame {
 
     public Home() {
         initComponents();
-
+        
+        try {
+            buscarQntClientes(totalClientes);
+            buscarQntVendas(totalVendas);
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         botaoContatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoProdutos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         botaoVendas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -15,6 +29,13 @@ public class Home extends javax.swing.JFrame {
     
     public Home(String funcionario, String funcao, String id){
         initComponents();
+        
+        try {
+            buscarQntClientes(totalClientes);
+            buscarQntVendas(totalVendas);
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         funcionarioNome.setText(funcionario);
         funcionarioFunction.setText(funcao);
@@ -32,6 +53,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -41,6 +63,11 @@ public class Home extends javax.swing.JFrame {
         funcionarioId = new javax.swing.JLabel();
         funcionarioNome = new javax.swing.JLabel();
         funcionarioFunction = new javax.swing.JLabel();
+        logoHome = new javax.swing.JLabel();
+        totalClientes = new javax.swing.JLabel();
+        totalVendas = new javax.swing.JLabel();
+        totalVendasCaixa = new javax.swing.JLabel();
+        totalClientesCaixa = new javax.swing.JLabel();
         botaoHome = new javax.swing.JButton();
         botaoVendas = new javax.swing.JButton();
         botaoContatos = new javax.swing.JButton();
@@ -75,6 +102,27 @@ public class Home extends javax.swing.JFrame {
         funcionarioFunction.setForeground(new java.awt.Color(255, 255, 255));
         funcionarioFunction.setText("administrador");
         jPanel1.add(funcionarioFunction, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
+
+        logoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logoHome.png"))); // NOI18N
+        jPanel1.add(logoHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, -1, -1));
+
+        totalClientes.setFont(new java.awt.Font("Jost", 1, 70)); // NOI18N
+        totalClientes.setForeground(new java.awt.Color(255, 209, 0));
+        totalClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalClientes.setText("0");
+        jPanel1.add(totalClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(302, 530, 370, -1));
+
+        totalVendas.setFont(new java.awt.Font("Jost", 1, 70)); // NOI18N
+        totalVendas.setForeground(new java.awt.Color(255, 209, 0));
+        totalVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalVendas.setText("0");
+        jPanel1.add(totalVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 530, 370, -1));
+
+        totalVendasCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/totalVendasCaixa.png"))); // NOI18N
+        jPanel1.add(totalVendasCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(722, 435, -1, -1));
+
+        totalClientesCaixa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/totalClientesCaixa.png"))); // NOI18N
+        jPanel1.add(totalClientesCaixa, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 435, -1, -1));
 
         botaoHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/homeIconPressed.png"))); // NOI18N
         botaoHome.setBorder(null);
@@ -181,7 +229,20 @@ public class Home extends javax.swing.JFrame {
         new RelatoriosADM(this.funcionarioNome.getText(), this.funcionarioFunction.getText(), this.funcionarioId.getText()).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botaoRelatoriosActionPerformed
-
+    
+    //BUSCA QUANTIDADE DE CLIENTES
+    public void buscarQntClientes(JLabel label) throws SQLException{
+        ClienteDAO cdao = new ClienteDAO();
+        
+        label.setText(Integer.toString(cdao.quantidadeCliente()));
+    }
+    
+    public void buscarQntVendas (JLabel label) throws SQLException {
+        VendaDAO vdao = new VendaDAO();
+                
+        label.setText(Integer.toString(vdao.quantidadeVendas()));
+    }
+    
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -202,9 +263,14 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel funcionarioId;
     private javax.swing.JLabel funcionarioNome;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logoHome;
     private javax.swing.JLabel logoIcon;
     private javax.swing.JLabel menuCima;
     private javax.swing.JLabel menuLateral;
+    private javax.swing.JLabel totalClientes;
+    private javax.swing.JLabel totalClientesCaixa;
+    private javax.swing.JLabel totalVendas;
+    private javax.swing.JLabel totalVendasCaixa;
     private javax.swing.JLabel userIcon;
     // End of variables declaration//GEN-END:variables
 }
