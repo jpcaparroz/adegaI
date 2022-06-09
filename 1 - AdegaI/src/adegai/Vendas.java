@@ -89,6 +89,7 @@ public class Vendas extends javax.swing.JFrame {
         bgVendas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Vendas");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -97,7 +98,7 @@ public class Vendas extends javax.swing.JFrame {
         funcionarioId.setFont(new java.awt.Font("Jost", 1, 30)); // NOI18N
         funcionarioId.setForeground(new java.awt.Color(255, 255, 255));
         funcionarioId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        funcionarioId.setText("1");
+        funcionarioId.setText("0");
         jPanel1.add(funcionarioId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 35, 65, -1));
 
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adegai/HomeADM/logo.png"))); // NOI18N

@@ -238,6 +238,7 @@ public class ContatosADM extends javax.swing.JFrame {
         bgContatos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ContatosADM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
