@@ -100,6 +100,7 @@ public class ProdutosADM extends javax.swing.JFrame {
         bgProdutos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ProdutosADM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -481,7 +482,10 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //CADASTRA PRODUTO
     private void cadastrarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBotaoActionPerformed
-        if (nomeProduto.getText().isEmpty() || quantidadeProduto.getText().isEmpty() || valorProduto.getText().isEmpty()) {
+        double vProduto = Double.parseDouble(valorProduto.getText());
+        int qProduto = Integer.parseInt(quantidadeProduto.getText()); 
+        
+        if (nomeProduto.getText().isEmpty() || quantidadeProduto.getText().isEmpty() || valorProduto.getText().isEmpty() || vProduto <= 0 || qProduto < 0) {
             adegai.mensagemPopUp("Erro!");
         } else {
             try {

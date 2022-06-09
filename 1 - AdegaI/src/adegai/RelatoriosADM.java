@@ -90,6 +90,7 @@ public class RelatoriosADM extends javax.swing.JFrame {
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("RelatóriosADM");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
