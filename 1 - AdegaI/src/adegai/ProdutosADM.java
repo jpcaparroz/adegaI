@@ -486,14 +486,16 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //CADASTRA PRODUTO
     private void cadastrarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBotaoActionPerformed
-        double vProduto = Double.parseDouble(valorProduto.getText());
+        double vProduto = Double.parseDouble(valorProduto.getText().replaceAll(",", "."));
         int qProduto = Integer.parseInt(quantidadeProduto.getText()); 
         
         if (nomeProduto.getText().isEmpty() || quantidadeProduto.getText().isEmpty() || valorProduto.getText().isEmpty() || vProduto <= 0 || qProduto < 0) {
             adegai.mensagemPopUp("Erro!");
         } else {
             try {
-                Produto produto = new Produto(nomeProduto.getText(), Double.parseDouble(valorProduto.getText().replaceAll(",", ".")), Integer.parseInt(quantidadeProduto.getText()), tipoProdutoCombo.getSelectedItem().toString());
+                
+                
+                Produto produto = new Produto(nomeProduto.getText(), vProduto, qProduto, tipoProdutoCombo.getSelectedItem().toString());
                 ProdutoDAO pdao = new ProdutoDAO();
 
                 pdao.insertProduto(produto);
