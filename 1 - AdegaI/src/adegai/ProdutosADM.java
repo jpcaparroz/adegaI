@@ -415,19 +415,23 @@ public class ProdutosADM extends javax.swing.JFrame {
     
     //EXCLUI PRODUTO
     private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
-        try {
-            Produto produto = new Produto(adegai.getId(excluirPordutosCombo.getSelectedItem().toString()));
-            ProdutoDAO pdao = new ProdutoDAO();
-            
-            if (pdao.deletProduto(produto)) {
-                
-                adegai.mensagemPopUp("Produto Excluído com sucesso!");
+        if (excluirPordutosCombo.getSelectedItem().toString().isBlank() || excluirPordutosCombo.getSelectedItem().toString().isEmpty()) {
+            adegai.mensagemPopUp("Erro ao excluir");
+        } else {
+            try {
+                Produto produto = new Produto(adegai.getId(excluirPordutosCombo.getSelectedItem().toString()));
+                ProdutoDAO pdao = new ProdutoDAO();
+
+                if (pdao.deletProduto(produto)) {
+
+                    adegai.mensagemPopUp("Produto Excluído com sucesso!");
+                    atualizarBotaoActionPerformed(evt);
+                }
+            } catch (SQLException ex) {
+                adegai.mensagemPopUp("Erro, produto já incluso em uma venda!");
                 atualizarBotaoActionPerformed(evt);
-            }    
-        } catch (SQLException ex) {
-            adegai.mensagemPopUp("Erro!");
-            atualizarBotaoActionPerformed(evt);
-            //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ProdutosADM.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_excluirBotaoActionPerformed
     
