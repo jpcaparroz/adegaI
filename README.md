@@ -90,3 +90,6 @@ _script da criação do banco_
 - ``Figma``
 
 # 🔐 Licença
+
+<br>
+Acesse a lincença desse projeto <a target="_blank" href="https://github.com/jpcaparroz/adegaI/blob/main/LICENSE.md">clicando aqui.</a>
