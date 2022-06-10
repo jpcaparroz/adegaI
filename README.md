@@ -22,7 +22,7 @@ Onde nele possuíam alguns requisitos mínimos para a entrega/apresentação.
 <br><br>
 Basicamente o software foi construído usando apenas 7 objetos do JavaX.Swing, onde neles são: 
 <br>
-**JLabel - JButton - JTextField - JComboBox - JScrollPane - JTable - JFrame**
+**``JLabel`` - ``JButton`` - ``JTextField`` - ``JComboBox`` - ``JScrollPane`` - ``JTable`` - ``JFrame``**
 <br><br>
 Seu design foi elaborado pelo Figma e exportado em PNG, assim como todas animações de Mouse e efeitos de ícones.
 Você pode acessar o design <a target="_blank" href="https://www.figma.com/file/abfbURvUOKlSWdt0GctN23/Projeto---Adega%C3%8D?node-id=0%3A1">clicando aqui.</a>
